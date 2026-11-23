@@ -1,67 +1,139 @@
-# Portfólio Jogável · Ronaldo Avansini
+# Portfólio interativo — Ronaldo Avansini
 
-Portfólio interativo de **Ronaldo Avansini** — Desenvolvedor Full Stack, Cloud & SRE e estudante de Ciência da Computação no Centro Universitário Barão de Mauá (8º semestre), baseado em Ribeirão Preto — SP.
+Portfólio pessoal de **Ronaldo Avansini**, bacharel em Ciência da Computação pelo Centro Universitário Barão de Mauá (formação concluída em agosto de 2026).
 
-O projeto une um **portfólio moderno, semântico e com design system cyberpunk refinado** com um **jogo de plataforma 2D em tempo real** onde o próprio DOM HTML funciona como a fase interativa ("A Descida").
+O site combina uma apresentação profissional com um jogo de plataforma em JavaScript Canvas. A navegação tradicional continua disponível, inclusive em telas menores, para que recrutadores encontrem rapidamente perfil, competências, projetos e contato.
 
----
+**Posicionamento:** Desenvolvimento Full Stack com ênfase em Backend, Integração de Sistemas e Dados.
 
-## 🚀 Projetos em Destaque no Portfólio
+> Os projetos apresentados são projetos de portfólio, demonstrações técnicas ou laboratórios. Não devem ser interpretados como sistemas comerciais em produção ou como experiências de emprego, salvo quando explicitamente indicado.
 
-Os projetos incorporados ao portfólio foram selecionados diretamente dos repositórios do autor no GitHub ([@Getsuga01](https://github.com/Getsuga01)), destacando competências de engenharia de software avançada:
+## Conteúdo
 
-1. **TechFix ERP** ([`github.com/Getsuga01/techfix-erp`](https://github.com/Getsuga01/techfix-erp))
-   * Sistema ERP especializado para assistência técnica em eletrônicos.
-   * Máquina de Estados Finita (FSM) rigorosa para ordens de serviço, baixa atômica de estoque em PostgreSQL, RBAC, laudos técnicos em PDF e 65 testes automatizados.
-   * *Stack:* Node.js 22, TypeScript, Fastify, PostgreSQL 16 + Prisma ORM, React 19, Next.js 15, Docker.
+- Perfil e formação acadêmica
+- Competências por domínio tecnológico
+- Jornada de aprendizado e projetos (não é histórico de emprego)
+- Estudos de caso e fluxos conceituais
+- Links para repositórios
+- Contato e currículo em PDF
 
-2. **Chaos Engineering & Resiliência Multi-Região na AWS** ([`github.com/Getsuga01/projeto-7-chaos-engineering`](https://github.com/Getsuga01/projeto-7-chaos-engineering))
-   * Laboratório ativo-ativo multi-região na AWS (us-east-1 / us-west-2) com DynamoDB Global Tables.
-   * Injeção controlada de falhas com **AWS Fault Injection Service (FIS)** quebrando replicação de propósito para mensurar **RTO e RPO reais** (Game Day de SRE).
-   * *Stack:* Python, AWS (Lambda, DynamoDB Global Tables, FIS), Terraform (IaC).
+## Projetos em destaque
 
-3. **Integração de Campo → ERP Oracle** ([`github.com/Getsuga01/erp-campo`](https://github.com/Getsuga01/erp-campo))
-   * Pipeline de ingestão de apontamentos operacionais agrícolas (pesagem, horas de máquina e insumos).
-   * Contratos de dados de schema, gestão de falhas com **Dead-Letter Queue (DLQ)**, fila de reprocessamento e painel analítico de conciliação com Oracle XE.
-   * *Stack:* Python, FastAPI, Oracle Database XE, Event-Driven, Docker.
+### 1. TechFix ERP — gestão para assistência técnica
+Repositório: https://github.com/Getsuga01/techfix-erp
 
-4. **Finnace_Tech · BaaS & Motor de Crédito** ([`github.com/Getsuga01/Finnace_Tech`](https://github.com/Getsuga01/Finnace_Tech))
-   * Ecossistema completo de Banking-as-a-Service e infraestrutura financeira.
-   * Simulador Pix BaaS, Motor de Análise e Decisão de Risco de Crédito, White-Label Multi-Tenant e esteira de infraestrutura automatizada com Terraform.
-   * *Stack:* Python, FastAPI, Terraform (IaC), Docker, Shell.
+Sistema de gestão para assistência técnica de eletrônicos. O projeto descreve fluxo de ordens de serviço baseado em Máquina de Estados Finita (FSM), controle de acesso por papéis (RBAC), baixa de estoque em transação e emissão de laudos em PDF.
 
-5. **DataPulse · Monitoramento de Dados Públicos do BACEN** ([`github.com/Getsuga01/DashBoard_pub`](https://github.com/Getsuga01/DashBoard_pub))
-   * Plataforma analítica de séries temporais da API do Banco Central (SGS) com cálculo de médias móveis (MM3/MM12), cache com Redis 7 e 21 testes unitários com Vitest.
-   * *Stack:* Node.js 22, Fastify v5, Next.js 15, PostgreSQL 16, Redis 7, Vitest.
+**Stack descrita:** Node.js 22, TypeScript, Fastify, PostgreSQL 16, Prisma ORM, React 19, Next.js 15 e Docker.
 
-6. **Verity AI · Workspaces & Document RAG** ([`github.com/Getsuga01/AI_Verety`](https://github.com/Getsuga01/AI_Verety))
-   * Aplicação com IA generativa para criação de workspaces e conversação contextualizada com documentos (PDF, TXT e Markdown) via RAG.
+O README do projeto informa 65 testes automatizados. Consulte o repositório para conferir a implementação, os cenários cobertos e as instruções de execução.
 
----
+### 2. DataPulse — dados públicos do Banco Central
+Repositório: https://github.com/Getsuga01/DashBoard_pub
 
-## 🎨 Design System: Cyberpunk Glassmorphism
+Aplicação analítica de séries temporais da API SGS do Banco Central, com indicadores e cache.
 
-* **Tipografia:** `Space Grotesk` (Headings/Display), `Outfit` (Títulos/Corpo) e `JetBrains Mono` (Código e Badges).
-* **Paleta:** Fundo Dark Obsidian (`#07040d`), Neon Violet (`#b026ff`), Rosa Choque (`#ec4899`) e Verde Esmeralda Status (`#10b981`).
-* **Componentes:** Cards com cantos arredondados (`14px`), borda translúcida com `backdrop-filter: blur(14px)`, linha de néon superior que reage ao personagem e efeito blueprint técnico nos números de fundo (`-webkit-text-stroke`).
+**Stack descrita:** Node.js, Fastify, Next.js, PostgreSQL, Redis e Vitest. O README do projeto informa 21 testes unitários.
 
----
+### 3. Integração de Campo → ERP Oracle
+Repositório: https://github.com/Getsuga01/erp-campo
 
-## 🕹️ Como Executar Localmente
+Projeto demonstrativo de ingestão de apontamentos operacionais, validação de contratos de dados, tratamento de falhas, reprocessamento e conciliação com Oracle Database XE.
+
+**Stack descrita:** Python, FastAPI, Oracle XE, Docker e processamento orientado a eventos.
+
+### 4. Chaos Engineering & SRE
+Repositório: https://github.com/Getsuga01/projeto-7-chaos-engineering
+
+Laboratório de resiliência em arquitetura multi-região AWS, com DynamoDB Global Tables, AWS Fault Injection Service e infraestrutura como código.
+
+**Stack descrita:** AWS, Python e Terraform. Os resultados de experimentos, parâmetros e métricas devem ser consultados no repositório.
+
+### 5. Finnace_Tech — BaaS e crédito
+Repositório: https://github.com/Getsuga01/Finnace_Tech
+
+Projeto demonstrativo com módulos de simulação de pagamentos, análise de risco de crédito, multi-tenancy e infraestrutura automatizada.
+
+**Stack descrita:** Python, FastAPI, Terraform e Docker.
+
+### 6. Verity AI — workspaces e RAG
+Repositório: https://github.com/Getsuga01/AI_Verety
+
+Aplicação de IA generativa com workspaces e recuperação contextual de conteúdo de documentos.
+
+## Tecnologias
+
+As tecnologias aparecem agrupadas por domínio; a lista não representa domínio especialista em todas elas.
+
+- **Principais:** TypeScript, JavaScript, Node.js, React e SQL
+- **Backend:** Fastify, Java/Spring Boot e C#/.NET
+- **Dados:** PostgreSQL, MySQL, SQL Server, Oracle e Python
+- **Complementares:** Vue.js, Next.js, C++, Docker, Git/GitHub e Terraform
+- **Outros estudos:** Microsoft Dynamics 365 F&O / X++
+
+## Estrutura do projeto
+
+```text
+Portifolionwe/
+├── assets/
+│   ├── Curriculo-Ronaldo-Avansini.pdf
+│   └── ronaldo-profile.png
+├── css/
+│   └── estilo.css
+├── js/
+│   ├── cena3d.js
+│   ├── desempenho.js
+│   ├── efeitos3d.js
+│   ├── fundo.js
+│   ├── jogo.js
+│   ├── mundo.js
+│   ├── site.js
+│   ├── som.js
+│   └── sprites.js
+└── index.html
+```
+
+## Executar localmente
+
+Não há etapa de build obrigatória. Na pasta do projeto, execute um servidor HTTP local:
 
 ```bash
-# Com Node.js / npx
-npx serve .
-
-# Ou com Python
 python -m http.server 8000
 ```
-Acesse `http://localhost:8000` ou a porta informada.
 
-### Controles
-* `Enter`: Iniciar modo jogável / Reiniciar
-* `←` / `→` ou `A` / `D`: Andar
-* `Espaço` ou `W` / `↑`: Pular (pulo duplo disponível)
-* `↓` ou `S`: Descer plataformas / Soco de impacto no ar
-* `M`: Áudio chiptune on/off
-* `Esc`: Fechar painéis
+Abra http://localhost:8000 no navegador.
+
+Também é possível usar:
+
+```bash
+npx serve .
+```
+
+## Controles do modo jogo
+
+- `Enter`: iniciar / reiniciar
+- `←` / `→` ou `A` / `D`: mover
+- `Espaço`, `W` ou `↑`: pular
+- `↓` ou `S`: descer plataformas / ação no ar
+- `M`: áudio
+- `Esc`: fechar painéis
+
+A navegação convencional por links permanece disponível. Em telas menores, use o menu **Seções**.
+
+## Acessibilidade e desempenho
+
+- Link para pular diretamente ao conteúdo
+- Navegação compacta em telas menores
+- Estados de foco visíveis para teclado
+- Respeito à preferência `prefers-reduced-motion` nos efeitos de interface
+- Qualidade gráfica adaptativa para dispositivos com diferentes capacidades
+
+## Contato
+
+- E-mail: contato.ronaldoavansini@outlook.com
+- LinkedIn: https://linkedin.com/in/ronaldo-avansini
+- GitHub: https://github.com/Getsuga01
+
+---
+
+Atualizado em novembro de 2026.

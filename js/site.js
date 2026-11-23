@@ -13,13 +13,19 @@
   /* navbar: progresso da leitura e seção atual */
   var barra = document.getElementById('progresso');
   var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
-  var secoes = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  var secoes = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  var menuMobile = document.querySelector('.nav-mobile');
+  if (menuMobile) {
+    menuMobile.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){ menuMobile.open = false; });
+    });
+  }
   var agendado = false;
 
   function aoRolar(){
     agendado = false;
     var y = window.scrollY, alt = document.documentElement.scrollHeight - window.innerHeight;
-    barra.style.width = (alt > 0 ? (y / alt) * 100 : 0) + '%';
+    if (barra) barra.style.width = (alt > 0 ? (y / alt) * 100 : 0) + '%';
     var atual = -1;
     for (var i = 0; i < secoes.length; i++) {
       if (secoes[i] && secoes[i].getBoundingClientRect().top <= window.innerHeight * 0.35) atual = i;

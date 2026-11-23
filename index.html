@@ -3,16 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ronaldo Avansini | Portfólio Full Stack</title>
-<meta name="description" content="Portfólio interativo de Ronaldo Avansini, Desenvolvedor Full Stack e estudante de Ciência da Computação na Barão de Mauá. Feito como um jogo de plataforma em canvas.">
-<meta name="theme-color" content="#0a0614">
+<title>Ronaldo Avansini | Desenvolvedor Full Stack</title>
+<meta name="author" content="Ronaldo Avansini">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Portfólio de Ronaldo Avansini, bacharel em Ciência da Computação. Projetos de desenvolvimento Full Stack, backend, integração de sistemas e engenharia de dados.">
+<meta name="theme-color" content="#0a061a">
+<link rel="canonical" href="https://getsuga01.github.io/Portif-fio/">
 
+<!-- Open Graph: pré-visualização ao compartilhar no LinkedIn/WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ronaldo Avansini · Portfólio">
+<meta property="og:url" content="https://getsuga01.github.io/Portif-fio/">
+<meta property="og:title" content="Ronaldo Avansini | Desenvolvedor Full Stack">
+<meta property="og:description" content="Portfólio jogável de projetos Full Stack: backend, integração de sistemas, dados e cloud. TechFix ERP, Chaos Engineering AWS, integração Oracle e Finnace_Tech.">
+<meta property="og:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ronaldo Avansini — Desenvolvedor Full Stack, portfólio jogável">
+<meta property="og:locale" content="pt_BR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ronaldo Avansini | Desenvolvedor Full Stack">
+<meta name="twitter:description" content="Portfólio jogável de projetos Full Stack: backend, integração de sistemas, dados e cloud.">
+<meta name="twitter:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.png">
+
+<!-- Dados estruturados -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ronaldo Avansini",
+  "jobTitle": "Desenvolvedor Full Stack",
+  "description": "Bacharel em Ciência da Computação, com ênfase em backend, integração de sistemas e dados.",
+  "url": "https://getsuga01.github.io/Portif-fio/",
+  "email": "mailto:contato.ronaldoavansini@outlook.com",
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "Centro Universitário Barão de Mauá" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Ribeirão Preto", "addressRegion": "SP", "addressCountry": "BR" },
+  "sameAs": [
+    "https://github.com/Getsuga01",
+    "https://www.linkedin.com/in/ronaldo-avansini",
+    "https://instagram.com/ronaldoavansini"
+  ]
+}
+</script>
+
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Pixelify+Sans:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+<a class="pular-conteudo" href="#perfil">Pular para o conteúdo</a>
 
 <!-- fundo animado (canvas 2D, atrás do conteúdo) -->
 <canvas id="fundo" aria-hidden="true"></canvas>
@@ -24,8 +68,8 @@
   <nav class="nav-links" aria-label="Seções">
     <a href="#perfil">Perfil</a>
     <a href="#atuacao">Stack</a>
-    <a href="#trajetoria">Trajetória</a>
-    <a href="#projetos">TechFix ERP</a>
+    <a href="#trajetoria">Jornada</a>
+    <a href="#projetos">Projetos</a>
     <a href="#chaos">Chaos Eng.</a>
     <a href="#erpcampo">ERP Campo</a>
     <a href="#fintech">Finnace Tech</a>
@@ -33,6 +77,15 @@
     <a href="#stats">Métricas</a>
     <a href="#contato">Contato</a>
   </nav>
+  <details class="nav-mobile">
+    <summary aria-label="Abrir navegação do portfólio">Seções <span aria-hidden="true">⌄</span></summary>
+    <nav aria-label="Navegação compacta">
+      <a href="#perfil">Perfil</a><a href="#atuacao">Stack</a><a href="#trajetoria">Jornada</a>
+      <a href="#projetos">TechFix ERP</a><a href="#chaos">Chaos Engineering</a>
+      <a href="#erpcampo">ERP Campo</a><a href="#fintech">Finnace Tech</a>
+      <a href="#servicos">Serviços</a><a href="#stats">Métricas</a><a href="#contato">Contato</a>
+    </nav>
+  </details>
   <button class="botao-pixel mini" type="button" data-acao="jogar"><span class="rotulo-jogar">▶ Jogar</span></button>
   <div class="progresso" id="progresso"></div>
 </header>
@@ -54,14 +107,13 @@
       </div>
       <div class="heroi-principal">
         <div class="heroi-texto" data-plat>
-          <p class="cargo">Desenvolvedor Full Stack especializado em Front-end, Back-end e Bancos de Dados. Ciência da Computação na Barão de Mauá (8º semestre), baseado em Ribeirão Preto — SP.</p>
-          <p>Transformo ideias complexas em interfaces elegantes e sistemas robustos. Foco em minimalismo,
-            performance, código limpo e arquitetura corporativa. Montei este portfólio como um jogo de plataforma interativo. Aperte
-            <strong>Jogar</strong> para descer a página com o personagem, ou role normalmente se preferir só ler.</p>
+          <p class="cargo">Desenvolvedor Full Stack com ênfase em Backend, Integração de Sistemas e Dados. Bacharel em Ciência da Computação pelo Centro Universitário Barão de Mauá.</p>
+          <p>Desenvolvo aplicações web, APIs e soluções orientadas a dados, conectando interfaces, regras de negócio e bancos relacionais. Tenho interesse em arquitetura de software, automação de processos, qualidade e integração entre sistemas. Este portfólio combina uma apresentação profissional com um jogo de plataforma interativo: use <strong>Jogar</strong> para explorar ou navegue normalmente.</p>
         </div>
         <div class="heroi-acoes">
           <button class="botao-pixel" type="button" data-acao="jogar"><span class="rotulo-jogar">▶ Jogar</span> <kbd>Enter</kbd></button>
-          <a class="botao-linha" href="#perfil">Só quero ler ↓</a>
+          <a class="botao-linha" href="#perfil">Ver apresentação ↓</a>
+          <a class="botao-linha" href="#projetos">Explorar projetos ↗</a>
           <a class="botao-linha" href="assets/Curriculo-Ronaldo-Avansini.pdf" download="Curriculo-Ronaldo-Avansini.pdf" style="color:var(--latao)">📄 Download CV</a>
         </div>
         <ul class="controles" aria-label="Controles">
@@ -76,7 +128,7 @@
         <ol>
           <li><a href="#perfil"><b>1</b>Perfil</a></li>
           <li><a href="#atuacao"><b>2</b>Stack</a></li>
-          <li><a href="#trajetoria"><b>3</b>Trajetória</a></li>
+          <li><a href="#trajetoria"><b>3</b>Jornada</a></li>
           <li><a href="#projetos"><b>4</b>TechFix ERP</a></li>
           <li><a href="#chaos"><b>5</b>Chaos Eng.</a></li>
           <li><a href="#erpcampo"><b>6</b>ERP Campo</a></li>
@@ -89,8 +141,8 @@
     </div>
 
     <div class="heroi-rodape" data-plat data-bugs="1">
-      <span>Ribeirão Preto, SP</span>
-      <span>TypeScript, React, Node.js, Java, .NET, Python e SQL</span>
+      <span>São Paulo, Brasil</span>
+      <span>Full Stack · Backend · Integração · Dados</span>
     </div>
   </section>
 
@@ -101,8 +153,7 @@
       <div class="col">
         <p class="kicker">Fase 1</p>
         <h2 data-plat data-pouso data-letras>Sobre mim</h2>
-        <p class="lead" data-plat data-bits="4">Sou Desenvolvedor Full Stack e estudante de Ciência da Computação no Centro
-          Universitário Barão de Mauá, em Ribeirão Preto — SP. Forte base teórica e prática em engenharia de software.</p>
+        <p class="lead" data-plat data-bits="4">Sou Desenvolvedor Full Stack e bacharel em Ciência da Computação pelo Centro Universitário Barão de Mauá. Tenho base em engenharia de software e interesse em construir soluções úteis, sustentáveis e bem estruturadas.</p>
         <p data-plat data-bugs="1">Atuo em aplicações web e sistemas corporativos de ponta a ponta, desenvolvendo interfaces
           reativas e acessíveis no front-end e estruturando microsserviços e bancos de dados seguros no back-end.</p>
         <p data-plat>Minha bagagem técnica abrange <strong>React, Vue.js, Node.js, Java com Spring Boot, .NET / C#, Python e C++</strong>.
@@ -111,16 +162,16 @@
           arquitetura de microsserviços escaláveis orientados a eventos.</p>
       </div>
       <figure class="retrato cartao" data-plat data-bits="4" data-cafe>
-        <img src="assets/ronaldo-profile.png" width="720" height="900" alt="Retrato de Ronaldo Avansini">
-        <figcaption><span>Ronaldo Avansini</span><span>Ciência da Computação · 8º Semestre</span></figcaption>
+        <img src="assets/ronaldo-profile.webp" width="720" height="900" alt="Retrato de Ronaldo Avansini" loading="lazy" decoding="async">
+        <figcaption><span>Ronaldo Avansini</span><span>Bacharel em Ciência da Computação · 2026</span></figcaption>
       </figure>
     </div>
 
     <dl class="fatos">
-      <div class="fato cartao" data-plat><dt>Formação</dt><dd>Ciência da Computação, Barão de Mauá</dd></div>
-      <div class="fato cartao" data-plat data-bits="2"><dt>Período</dt><dd>8º semestre cursando</dd></div>
-      <div class="fato cartao" data-plat data-bugs="1"><dt>Especialidade</dt><dd>Full Stack (Front, Back &amp; Dados)</dd></div>
-      <div class="fato cartao" data-plat data-bits="2"><dt>Enterprise ERP</dt><dd>Dynamics 365 F&amp;O (X++)</dd></div>
+      <div class="fato cartao" data-plat><dt>Graduação</dt><dd>Ciência da Computação · Barão de Mauá</dd></div>
+      <div class="fato cartao" data-plat data-bits="2"><dt>Formação</dt><dd>Concluída em agosto de 2026</dd></div>
+      <div class="fato cartao" data-plat data-bugs="1"><dt>Ênfase</dt><dd>Backend, Integrações e Dados</dd></div>
+      <div class="fato cartao" data-plat data-bits="2"><dt>Foco técnico</dt><dd>APIs, SQL e integração</dd></div>
       <div class="fato cartao" data-plat data-skill="FullStack"><dt>Localização</dt><dd>Ribeirão Preto — SP</dd></div>
     </dl>
   </section>
@@ -130,7 +181,7 @@
     <span class="fase-num" aria-hidden="true">2</span>
     <div class="col">
       <p class="kicker">Fase 2</p>
-      <h2 data-plat data-pouso data-letras>O que eu domino</h2>
+      <h2 data-plat data-pouso data-letras>Stack tecnológica e competências</h2>
       <p data-plat data-bits="4">Ferramentas e padrões de engenharia selecionados para construir sistemas
         resilientes, performáticos e escaláveis.</p>
     </div>
@@ -236,15 +287,22 @@
       <div class="col">
         <p class="kicker">Fase 5</p>
         <h2 data-plat data-pouso data-letras>Chaos Engineering &amp; SRE</h2>
-        <p class="lead" data-plat data-bits="4">Laboratório de Resiliência Multi-Região na AWS com injeção intencional de falhas para mensuração empírica de RTO e RPO reais.</p>
-        <p data-plat>A maioria das arquiteturas supõe resiliência em diagramas conceituais. Este projeto realiza um <strong>Game Day de SRE</strong>: um serviço de transações ativo-ativo em duas regiões AWS (us-east-1 e us-west-2) com <strong>DynamoDB Global Tables</strong>, onde o <strong>AWS Fault Injection Service (FIS)</strong> quebra a replicação de propósito para validar a tolerância a desastres.</p>
+        <p class="lead" data-plat data-bits="4">Projeto-laboratório de resiliência multi-região na AWS, com injeção controlada de falhas para estudar recuperação de serviços e métricas de RTO/RPO.</p>
+        <p data-plat>O laboratório explora um cenário <strong>Game Day de SRE</strong>: uma arquitetura de referência em duas regiões AWS (us-east-1 e us-west-2), com <strong>DynamoDB Global Tables</strong> e <strong>AWS Fault Injection Service (FIS)</strong> para exercitar cenários de falha e observar a recuperação.</p>
         <ul class="lista">
           <li data-plat data-skill="SRE|AWS" data-sx="0.72"><b>Multi-Region Active-Active</b> Tráfego distribuído via Route 53 com replicação bidirecional contínua</li>
           <li data-plat data-bugs="1"><b>Injeção de Falhas (AWS FIS)</b> Simulação controlada de partições de rede, indisponibilidade regional e latência extrema</li>
-          <li data-plat><b>RTO &amp; RPO Medidos</b> Aferição real do tempo de recuperação e perda de dados sob estresse real</li>
+          <li data-plat><b>RTO &amp; RPO</b> Métricas para avaliar tempo de recuperação e perda potencial de dados</li>
           <li data-plat data-bits="3"><b>Infraestrutura como Código</b> Provisionamento 100% declarativo e reprodutível com Terraform (HCL)</li>
         </ul>
-        <p style="margin-top:20px;"><a class="botao-pixel mini" href="https://github.com/Getsuga01/projeto-7-chaos-engineering" target="_blank" rel="noopener">Ver Projeto Chaos Engineering →</a></p>
+        <div class="arquitetura-projeto" aria-label="Fluxo conceitual do laboratório de resiliência">
+            <span>Route 53 · roteamento</span><b aria-hidden="true">↓</b>
+            <span>Regiões AWS · us-east-1 / us-west-2</span><b aria-hidden="true">↓</b>
+            <span>DynamoDB Global Tables</span><b aria-hidden="true">↓</b>
+            <span>AWS FIS · cenários de falha · observação RTO/RPO</span>
+          </div>
+          <p class="nota-projeto">Arquitetura resumida para apresentação. Os resultados e parâmetros dos experimentos devem ser consultados no repositório.</p>
+          <p style="margin-top:20px;"><a class="botao-pixel mini" href="https://github.com/Getsuga01/projeto-7-chaos-engineering" target="_blank" rel="noopener">Ver Projeto Chaos Engineering →</a></p>
       </div>
 
       <div class="sites">
@@ -255,7 +313,7 @@
         </a>
         <a class="site cartao" data-plat data-glitch="1" href="https://github.com/Getsuga01/DashBoard_pub" target="_blank" rel="noopener">
           <span class="nome">DataPulse · Analytics BACEN</span>
-          <span class="sobre">Dashboard de dados econômicos do Banco Central com Fastify, Redis 7 e 21 testes</span>
+          <span class="sobre">Séries temporais da API SGS do Banco Central com Fastify, Redis 7 e 21 testes unitários</span>
           <span class="end">github.com/Getsuga01/DashBoard_pub →</span>
         </a>
         <a class="site cartao" data-plat data-bugs="1" data-bits="2" href="https://github.com/Getsuga01/AI_Verety" target="_blank" rel="noopener">
@@ -278,7 +336,7 @@
     <div class="col">
       <p class="kicker">Fase 6</p>
       <h2 data-plat data-pouso data-letras>Integração de Campo → ERP</h2>
-      <p class="lead" data-plat data-bits="4">Pipeline corporativo de ingestão de dados operacionais do agronegócio para ERP Oracle XE com Fila de Reprocessamento, Dead-Letter Queue e Painel de Conciliação.</p>
+      <p class="lead" data-plat data-bits="4">Projeto demonstrativo de ingestão de dados operacionais para Oracle XE, com validação, fila de reprocessamento, Dead-Letter Queue e painel de conciliação.</p>
     </div>
 
     <div class="puppet-grade">
@@ -294,6 +352,12 @@
       <div class="puppet-texto">
         <p data-plat>O projeto simula um cenário real da agroindústria: a coleta de <strong>apontamentos operacionais</strong> (pesagem de colheita, horímetro de máquinas e consumo de insumos) em condições de conectividade instável de campo.</p>
         <p data-plat data-bits="3">Os dados passam por validação estrita de contrato de schema antes de persistir no <strong>Oracle Database XE</strong>. Falhas transitórias são isoladas em uma <strong>Dead-Letter Queue (DLQ)</strong> com retentativas automáticas, e um <strong>painel analítico de conciliação</strong> monitora discrepâncias operacionais em tempo real.</p>
+        <div class="arquitetura-projeto" aria-label="Fluxo de ingestão de dados do ERP Campo">
+          <span>Apontamentos de campo</span><b aria-hidden="true">↓</b>
+          <span>FastAPI · validação de schema</span><b aria-hidden="true">↓</b>
+          <span>Workers · retentativas · DLQ</span><b aria-hidden="true">↓</b>
+          <span>Oracle XE · conciliação</span>
+        </div>
         <dl class="specs">
           <div data-plat><dt>Pipeline</dt><dd>Python / FastAPI &amp; Workers Assíncronos</dd></div>
           <div data-plat data-bugs="1"><dt>ERP Database</dt><dd>Oracle Database XE (SQL &amp; PL/SQL)</dd></div>
@@ -311,8 +375,8 @@
     <div class="col">
       <p class="kicker">Fase 7</p>
       <h2 data-plat data-pouso data-letras>Finnace_Tech · BaaS &amp; Crédito</h2>
-      <p class="lead" data-plat data-bits="4">Ecossistema de infraestrutura financeira e operações de crédito: simulação de ponta a ponta do ciclo de vida de Banking-as-a-Service.</p>
-      <p data-plat data-bugs="1">Composto por 4 sistemas integrados em produção simulada: <strong>Simulador Pix BaaS</strong>, <strong>Motor de Decisão e Risco de Crédito</strong>, <strong>Plataforma White-Label Multi-Tenant</strong> e esteira de infraestrutura automatizada com <strong>Terraform (IaC)</strong>.</p>
+      <p class="lead" data-plat data-bits="4">Projeto demonstrativo de serviços financeiros e operações de crédito, simulando componentes de um fluxo Banking-as-a-Service.</p>
+      <p data-plat data-bugs="1">Composto por quatro módulos em ambiente de demonstração: <strong>Simulador Pix BaaS</strong>, <strong>Motor de Decisão e Risco de Crédito</strong>, <strong>Plataforma White-Label Multi-Tenant</strong> e esteira de infraestrutura automatizada com <strong>Terraform (IaC)</strong>.</p>
     </div>
 
 <pre class="codigo cartao" data-plat data-skill="Python" data-sx="0.88" data-glitch="2" data-bugs="1"><code><span class="c"># Motor de Decisão de Risco de Crédito &amp; Score Dinâmico</span>
@@ -389,32 +453,34 @@
     <div class="col">
       <p class="kicker">Fase 9</p>
       <h2 data-plat data-pouso data-letras>Métricas e Resultados</h2>
-      <p data-plat data-bits="4">Números da trajetória profissional e amplitude de competências técnicas.</p>
+      <p data-plat data-bits="4">Indicadores verificáveis dos projetos publicados e da formação acadêmica.</p>
     </div>
 
     <div class="competicoes">
-      <article class="competicao cartao" data-plat data-trofeu="Stack Completa" data-bugs="1">
-        <p class="destaque">Amplitude Tecnológica</p>
-        <h3>11+ Tecnologias &amp; Frameworks</h3>
-        <p>Experiência prática com TypeScript, JavaScript, React, Vue.js, Node.js, Java, Spring Boot,
-          .NET / C#, Python, C++ e Docker.</p>
-        <ul class="decisoes" aria-label="Especialidades">
-          <li class="ok">Frontend</li>
-          <li class="dois">Backend</li>
-          <li class="nao">Databases</li>
+      <article class="competicao cartao" data-plat data-trofeu="Qualidade Verificável" data-bugs="1">
+        <p class="destaque">Qualidade & Verificação</p>
+        <h3>86 testes automatizados publicados</h3>
+        <p>Soma dos testes reportados nos READMEs dos repositórios publicados: <strong>65 no TechFix ERP</strong>
+          (FSM de ordens de serviço, RBAC e transações) e <strong>21 no DataPulse</strong> (ingestão de séries
+          econômicas do BACEN).</p>
+        <ul class="decisoes" aria-label="Tipos de teste">
+          <li class="ok">Unitários</li>
+          <li class="dois">Integração</li>
+          <li class="ok">Cenários FSM</li>
         </ul>
-        <p>Desenvolvimento focado em componentização reutilizável, separação de responsabilidades e
-          cobertura com testes automatizados.</p>
-        <p class="usa">React, Vue, Node, Java, .NET, Python e Docker</p>
+        <p>O próprio portfólio é uma demonstração de ofício: um jogo de plataforma em canvas 2D puro,
+          sem frameworks, com modo de leitura acessível e navegação completa por teclado.</p>
+        <p class="usa">Node.js · Vitest · Canvas 2D · Acessibilidade</p>
       </article>
 
       <article class="competicao cartao" data-plat data-skill="Databases" data-sx="0.8" data-glitch="2" data-bits="3" data-bx="0.3">
-        <p class="destaque">Dados e Formação</p>
-        <h3>4+ SGBDs &amp; Ciência da Computação</h3>
-        <p>Prestes a concluir o Bacharelado em Ciência da Computação no Centro Universitário Barão de Mauá
-          (8º semestre), com sólida vivência em modelagem e queries de alta performance.</p>
+        <p class="destaque">Dados & Resiliência</p>
+        <h3>4 SGBDs · 2 regiões AWS</h3>
+        <p>Bacharel em Ciência da Computação pelo Centro Universitário Barão de Mauá (concluído em agosto de 2026),
+          com prática em modelagem relacional e consultas SQL, e laboratório de resiliência ativo-ativo nas
+          regiões us-east-1 / us-west-2 com DynamoDB Global Tables.</p>
         <div class="fluxos">
-          <p class="fluxo-rotulo">Bancos Dominados</p>
+          <p class="fluxo-rotulo">Bancos de dados</p>
           <ol class="fluxo" aria-label="Bancos de dados">
             <li><span>PostgreSQL</span></li>
             <li><span>MySQL</span></li>
@@ -422,7 +488,7 @@
             <li><span>Oracle</span></li>
           </ol>
         </div>
-        <p class="usa">PostgreSQL, MySQL, SQL Server e Oracle</p>
+        <p class="usa">PostgreSQL · MySQL · SQL Server · Oracle · Terraform · AWS FIS</p>
       </article>
     </div>
   </section>
@@ -464,7 +530,7 @@
 
 <footer class="rodape">
   <span>Ronaldo Avansini</span>
-  <span>Ciência da Computação, Barão de Mauá · Ribeirão Preto — SP</span>
+  <span>Bacharel em Ciência da Computação · Barão de Mauá · Brasil</span>
   <span>Feito com HTML, CSS e JavaScript em 2026</span>
 </footer>
 
@@ -473,7 +539,7 @@
 
 <div class="hud-botoes" id="hudBotoes">
   <button type="button" id="btnSom" aria-label="Som ligado" title="Som (M)">♪</button>
-  <button type="button" id="btnPausa" aria-label="Pausar" title="Pausar (P)">II</button>
+  <button type="button" id="btnPausa" aria-label="Pausar" title="Pausar (P)"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><rect x="1" y="1" width="3.5" height="10" fill="currentColor"/><rect x="7.5" y="1" width="3.5" height="10" fill="currentColor"/></svg></button>
 </div>
 
 <div class="toque" id="toque" aria-hidden="true">
@@ -493,14 +559,14 @@
 
 <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 
-<script src="js/som.js"></script>
-<script src="js/desempenho.js"></script>
-<script src="js/sprites.js"></script>
-<script src="js/mundo.js"></script>
-<script src="js/efeitos3d.js"></script>
-<script src="js/fundo.js"></script>
-<script src="js/jogo.js"></script>
-<script src="js/site.js"></script>
+<script src="js/som.js" defer></script>
+<script src="js/desempenho.js" defer></script>
+<script src="js/sprites.js" defer></script>
+<script src="js/mundo.js" defer></script>
+<script src="js/efeitos3d.js" defer></script>
+<script src="js/fundo.js" defer></script>
+<script src="js/jogo.js" defer></script>
+<script src="js/site.js" defer></script>
 <script src="js/cena3d.js" defer></script>
 </body>
 </html>
