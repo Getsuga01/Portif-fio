@@ -101,7 +101,7 @@ PV.efeitos3d = (function(){
   var h1 = document.querySelector('.titulo');
   var mouse = { x: 0, y: 0, t: -1e9 }, foco = null;
   var dir = { x: 0.55, y: 0.83 }, ultimoDir = '';
-  var CORES = [['#a855f7', '#3b0764'], ['#c084fc', '#581c87']];
+  var CORES = [['#ff2e93', '#4a0836'], ['#00f5d4', '#083b4a']];
   window.addEventListener('pointermove', function(e){ mouse.x = e.clientX; mouse.y = e.clientY; mouse.t = performance.now(); }, { passive: true });
 
   function misturar(a, b, t){

@@ -35,7 +35,7 @@ git rm assets/ronaldo-profile.png   # só se ainda existir no repo
 1. LinkedIn Post Inspector: https://www.linkedin.com/post-inspector/ — cole a URL do site.
 2. Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/ — cole a URL
    e clique em "Scrape Again" (o cache do Facebook costuma guardar a versão antiga).
-3. Confira se a pré-visualização mostra a capa `og-cover.png`.
+3. Confira se a pré-visualização mostra a capa `og-cover.jpg`.
 
 ## 4. Conferência rápida pós-deploy
 
@@ -50,13 +50,21 @@ git rm assets/ronaldo-profile.png   # só se ainda existir no repo
 ```
 index.html          # única página alterada
 css/estilo.css      # sem alterações
-js/                 # sem alterações (9 módulos, com defer no HTML)
+css/cyberpunk.css   # camada temática (scanlines, glitch, Orbitron, capas IA)
+js/                 # fundo.js (chuva neon) e cena3d.js (cidade + portal) alterados
 assets/
   ronaldo-profile.webp   # foto comprimida (39 KB)
-  og-cover.png           # capa 1200×630 para redes sociais (72 KB)
-  favicon.png            # 64×64
+  bg-cidade.jpg          # fundo IA do herói
+  bg-grade.jpg           # grade synthwave das seções "faixa"
+  capa-techfix.jpg       # capas de projeto geradas por IA
+  capa-chaos.jpg         # (também fundo da seção Chaos)
+  capa-erpcampo.jpg
+  capa-finnace.jpg       # (banner próprio na seção Finnace_Tech)
+  og-cover.jpg           # capa 1200×630 para redes sociais (144 KB, base IA)
+  favicon.png            # 64×64, variante cyber
   apple-touch-icon.png   # 180×180
   Curriculo-Ronaldo-Avansini.pdf
-MUDANCAS.md         # lista completa do que mudou
+MUDANCAS.md         # mudanças da versão campeã
+MUDANCAS-CYBER.md   # documentação da camada cyberpunk
 README-DEPLOY.md    # este arquivo
 ```

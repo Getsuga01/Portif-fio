@@ -1,10 +1,12 @@
 /* ==========================================================
    CENA 3D · peças grandes que aparecem conforme a página desce
-   Três modelos montados só com geometria do three.js e texturas
+   Modelos montados só com geometria do three.js e texturas
    pintadas em canvas (nenhum arquivo de modelo nem de imagem):
-     - a placa Arduino Nano  (Atuação, Trajetória e Projetos)
-     - a mão robótica Puppet (Web, Puppet e Criptografia)
-     - um troféu de ouro     (Prêmios e Competições)
+     - a megacidade wireframe neon (Início e Perfil)
+     - a placa de circuito / Arduino (Stack, Trajetória e TechFix)
+     - a placa de vídeo cyberpunk GPU (Chaos Eng, ERP Campo e Finnace Tech)
+     - o troféu de ouro de engenharia (Serviços e Métricas)
+     - o robozinho cyberpunk amigável dizendo "Olá!" (Contato)
    Cada peça sobe de baixo quando a fase chega, fica no lado
    vazio da página, tinge o cenário com a sua cor e reage ao que
    o personagem faz (pulo, soco, coleta, dano).
@@ -460,196 +462,278 @@ PV.cena3d = (function(){
     }
 
     /* ==========================================================
-       PEÇA 2 · MÃO ROBÓTICA PUPPET (unidade = centímetro)
-       PLA creme com marcas de camada, servos azuis com polias
-       pretas no antebraço e articulação por cabos.
+       PEÇA 2 · PLACA DE VÍDEO CYBERPUNK (GPU RTX HIGH-END)
+       PCB preto com contatos PCIe dourados, dissipador com aletas
+       de alumínio, heatpipes de cobre, carcaça angular cyberpunk,
+       backplate com iluminação, 3 ventoinhas giratórias com anéis
+       ARGB neon, barra lateral "GEFORCE RTX" e cabos de energia.
        ========================================================== */
-    function criarMao(){
-      var rnd = semente(11);
-      function pla(modo){
-        return tela(512, 512, function(g, w, h){
-          g.fillStyle = modo === 'cor' ? '#e8d39b' : (modo === 'rugo' ? 'rgb(0,165,0)' : '#808080');
-          g.fillRect(0, 0, w, h);
-          // camadas da impressão 3D: listras finas que pegam a luz
-          for (var y = 0; y < h; y += 4) {
-            var claro = (y / 4) % 2 === 0;
-            if (modo === 'cor') g.fillStyle = claro ? 'rgba(255,250,232,.10)' : 'rgba(120,96,40,.08)';
-            else if (modo === 'rugo') g.fillStyle = claro ? 'rgba(0,120,0,.5)' : 'rgba(0,210,0,.5)';
-            else g.fillStyle = claro ? '#9a9a9a' : '#6a6a6a';
-            g.fillRect(0, y, w, 2);
-          }
-          if (modo === 'cor') salpicar(g, w, h, 1600, ['rgba(110,86,30,.10)', 'rgba(255,255,255,.12)'], 2.5, rnd);
-        });
-      }
-      var cor = tex(pla('cor'), true, true), rugo = tex(pla('rugo'), false, true), rel = tex(pla('relevo'), false, true);
-      [cor, rugo, rel].forEach(function(t){ t.repeat.set(1, 1.6); });
-      var plaMat = new T.MeshStandardMaterial({ map: cor, roughnessMap: rugo, bumpMap: rel, bumpScale: 0.03, roughness: 1, metalness: 0 });
-      var plaEscuro = new T.MeshStandardMaterial({ color: 0xc9b07a, map: cor, bumpMap: rel, bumpScale: 0.03, roughness: 0.8 });
-      var pino = new T.MeshStandardMaterial({ color: 0x9aa0a8, metalness: 1, roughness: 0.32 });
-      var cabo = new T.MeshStandardMaterial({ color: 0xf2f2ee, roughness: 0.4 });
+    function criarPlacaVideo(){
+      var rnd = semente(1337);
+      var gpu = new T.Group();
 
-      var mao = new T.Group();
-      // palma
-      var palma = new T.Mesh(caixaRed(8.2, 8.6, 2.7, 0.75), plaMat);
-      palma.position.set(0, 4.3, 0); mao.add(palma);
-      // gravação na palma
-      var gravacao = new T.Mesh(new T.PlaneGeometry(5.6, 1.6), new T.MeshStandardMaterial({
-        map: tex(tela(512, 146, function(g, w, h){
-          g.fillStyle = 'rgba(150,118,52,.55)'; g.font = 'bold 92px Arial, sans-serif';
-          g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('PUPPET', w / 2, h / 2 + 4);
-        }), true), transparent: true, roughness: 0.9, depthWrite: false
-      }));
-      gravacao.position.set(0, 2.2, 1.36); mao.add(gravacao);
-      [[-2.6, 6.9], [2.6, 6.9], [-2.6, 1.0], [2.6, 1.0]].forEach(function(pp){
-        var parafuso = new T.Mesh(new T.CylinderGeometry(0.32, 0.32, 0.2, 18), pino);
-        parafuso.rotation.x = Math.PI / 2; parafuso.position.set(pp[0], pp[1], 1.38); mao.add(parafuso);
-      });
+      var LARG = 28, ALT = 12.5, PROF = 5.0; // dimensões da GPU em cm
 
-      // dedos: três falanges presas por pinos, cada junta é um grupo que gira
-      var dedos = [];
-      function dedo(x, y, z, tamanhos, larg, rotZ, rotY){
-        var base = new T.Group();
-        base.position.set(x, y, z); base.rotation.z = rotZ || 0; base.rotation.y = rotY || 0;
-        mao.add(base);
-        var juntas = [], pai = base;
-        tamanhos.forEach(function(tam, i){
-          var junta = new T.Group();
-          if (i > 0) junta.position.y = tamanhos[i - 1];
-          pai.add(junta);
-          var ponta = i === tamanhos.length - 1;
-          var seg = new T.Mesh(caixaRed(larg * (ponta ? 0.92 : 0.96), tam - 0.5, 1.5, ponta ? 0.68 : 0.48), plaMat);
-          seg.position.y = tam / 2 + 0.25;
-          junta.add(seg);
-          // nó da dobradiça: cilindro de PLA atravessado por um pino de metal
-          var no = new T.Mesh(new T.CylinderGeometry(0.66, 0.66, larg * 0.9, 28), plaEscuro);
-          no.rotation.z = Math.PI / 2; junta.add(no);
-          var eixo = new T.Mesh(new T.CylinderGeometry(0.2, 0.2, larg + 0.36, 14), pino);
-          eixo.rotation.z = Math.PI / 2; junta.add(eixo);
-          [-1, 1].forEach(function(l){
-            var cabeca = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 0.1, 18), pino);
-            cabeca.rotation.z = Math.PI / 2; cabeca.position.x = l * (larg / 2 + 0.18); junta.add(cabeca);
-          });
-          juntas.push(junta); pai = junta;
-        });
-        dedos.push({ juntas: juntas, base: base });
-        return base;
-      }
-      dedo(-2.95, 9.0, 0, [3.9, 2.7, 2.2], 1.62);
-      dedo(-0.98, 9.15, 0, [4.3, 3.0, 2.3], 1.66);
-      dedo(0.98, 9.05, 0, [4.0, 2.8, 2.2], 1.62);
-      dedo(2.9, 8.85, 0, [3.2, 2.3, 1.9], 1.45);
-      dedo(-4.4, 2.6, 0.45, [3.3, 2.7], 1.8, 0.85, -0.55);    // polegar
-
-      // cabos de articulação: da polia de cada servo, subindo pela palma até a base de cada dedo
-      var antebraco = new T.Group();
-      antebraco.position.set(0, -0.8, -0.2);
-      mao.add(antebraco);
-      var punho = new T.Mesh(caixaRed(7.2, 1.8, 3.1, 0.6), plaEscuro);
-      punho.position.set(0, -0.2, 0); antebraco.add(punho);
-      var eixoPunho = new T.Mesh(new T.CylinderGeometry(0.55, 0.55, 7.8, 20), pino);
-      eixoPunho.rotation.z = Math.PI / 2; eixoPunho.position.set(0, 0.4, 0); antebraco.add(eixoPunho);
-      var calha = new T.Group();
-      var fundoC = caixaRed(8.0, 15.5, 1.4, 0.6);
-      var paredes = [
-        [caixaRed(0.8, 15.5, 3.6, 0.35), -3.6, 0, 0.7], [caixaRed(0.8, 15.5, 3.6, 0.35), 3.6, 0, 0.7],
-        [caixaRed(8.0, 0.8, 3.6, 0.35), 0, 7.35, 0.7], [caixaRed(8.0, 0.9, 3.6, 0.35), 0, -7.3, 0.7]
-      ];
-      var chao = new T.Mesh(fundoC, plaMat); chao.position.z = -0.6; calha.add(chao);
-      paredes.forEach(function(pp){ var m = new T.Mesh(pp[0], plaMat); m.position.set(pp[1], pp[2], pp[3]); calha.add(m); });
-      var interior = new T.Mesh(caixaRed(6.4, 13.6, 0.3, 0.1), new T.MeshStandardMaterial({ color: 0xb59c64, map: cor, roughness: 0.9 }));
-      interior.position.z = 0.15; calha.add(interior);
-      calha.position.set(0, -9.0, -0.5);
-      // mais largo perto do cotovelo, como o antebraço de verdade
-      calha.children.forEach(function(m){
-        var pos = m.geometry.attributes.position;
-        if (m.geometry._afinado) return;
-        for (var q = 0; q < pos.count; q++) {
-          var yy = pos.getY(q) + m.position.y;
-          pos.setX(q, pos.getX(q) * (1 + 0.16 * (7.75 - yy) / 15.5) + (m.position.x ? m.position.x * 0.16 * (7.75 - yy) / 15.5 : 0));
+      // Textura do PCB com trilhas de circuito
+      var texPcb = tex(tela(512, 256, function(g, w, h){
+        g.fillStyle = '#0a0b0e'; g.fillRect(0, 0, w, h);
+        salpicar(g, w, h, 2800, ['rgba(255,255,255,.02)', 'rgba(0,0,0,.4)'], 2, rnd);
+        g.lineWidth = 1.4;
+        for (var i = 0; i < 35; i++) {
+          g.strokeStyle = i % 3 === 0 ? 'rgba(66,232,255,.45)' : 'rgba(216,180,90,.35)';
+          var x = rnd() * w, y = rnd() * h;
+          g.beginPath(); g.moveTo(x, y);
+          g.lineTo(x + 20, y + 20); g.lineTo(x + 55, y + 20);
+          g.stroke();
         }
-        pos.needsUpdate = true; m.geometry._afinado = true;
-      });
-      antebraco.add(calha);
-
-      var azul = fisico({ color: 0x2a49d6, roughness: 0.32, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.2, transparent: true, opacity: 0.94 });
-      var rotulo = tex(tela(256, 256, function(g, w, h){
-        g.fillStyle = '#2a49d6'; g.fillRect(0, 0, w, h);
-        g.fillStyle = 'rgba(255,255,255,.85)'; g.textAlign = 'center'; g.textBaseline = 'middle';
-        g.font = 'bold 54px Arial, sans-serif'; g.fillText('SG90', w / 2, h * 0.42);
-        g.font = '30px Arial, sans-serif'; g.fillText('9g servo', w / 2, h * 0.64);
       }), true);
-      var azulRotulo = fisico({ map: rotulo, roughness: 0.35, clearcoat: 0.6, clearcoatRoughness: 0.2 });
-      var polia = new T.MeshStandardMaterial({ color: 0x141518, roughness: 0.45 });
-      var marca = new T.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.5 });
-      var polias = [];
-      [[-1.6, -5.4], [1.6, -5.4], [-1.6, -11.2], [1.6, -11.2]].forEach(function(sp, i){
-        var servo = new T.Group();
-        servo.position.set(sp[0], sp[1], 1.6);
-        var corpo = new T.Mesh(caixaRed(2.3, 2.6, 1.2, 0.12), [azul, azul, azul, azul, azulRotulo, azul]);
-        corpo.position.z = 0.6; servo.add(corpo);
-        var aba = new T.Mesh(caixaRed(2.3, 3.3, 0.24, 0.06), azul);
-        aba.position.z = 0.9; servo.add(aba);
-        var eixo = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 0.5, 16), marca);
-        eixo.rotation.x = Math.PI / 2; eixo.position.set(0, 0.6, 1.4); servo.add(eixo);
-        var disco = new T.Group();
-        disco.position.set(0, 0.6, 1.7);
-        var d = new T.Mesh(new T.CylinderGeometry(1.05, 1.05, 0.3, 36), polia);
-        d.rotation.x = Math.PI / 2; disco.add(d);
-        for (var f = 0; f < 6; f++) {
-          var ponto = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.32, 10), marca);
-          ponto.rotation.x = Math.PI / 2;
-          ponto.position.set(Math.cos(f * Math.PI / 3) * 0.7, Math.sin(f * Math.PI / 3) * 0.7, 0.02);
-          disco.add(ponto);
+
+      // Backplate metálico com gravação a laser estilizada
+      var texBackplate = tex(tela(512, 256, function(g, w, h){
+        var gr = g.createLinearGradient(0, 0, w, h);
+        gr.addColorStop(0, '#1c1e24'); gr.addColorStop(1, '#0e1014');
+        g.fillStyle = gr; g.fillRect(0, 0, w, h);
+        g.strokeStyle = 'rgba(66,232,255,.55)'; g.lineWidth = 2.5;
+        g.beginPath();
+        g.moveTo(20, 20); g.lineTo(w - 110, 20); g.lineTo(w - 50, 75); g.lineTo(w - 20, h - 20);
+        g.stroke();
+        // recortes de exaustão flow-through estilo RTX 40
+        g.fillStyle = '#07080a';
+        for (var k = 0; k < 6; k++) {
+          g.fillRect(w - 130 + k * 16, 45, 9, h - 90);
         }
-        servo.add(disco);
-        antebraco.add(servo);
-        polias.push(disco);
-        // fios do servo: marrom, vermelho e laranja saindo pelo fim do antebraço
-        [0x6b3a1e, 0xd2322b, 0xf08a1c].forEach(function(cf, k){
-          var x0 = sp[0] + (k - 1) * 0.22;
-          var curva = new T.CatmullRomCurve3([
-            new T.Vector3(x0, sp[1] - 1.4, 1.9),
-            new T.Vector3(x0 * 0.6 + (k - 1) * 0.3, sp[1] - 3.5, 2.2),
-            new T.Vector3(x0 * 0.4 + (k - 1) * 0.35, -17.5, 1.4),
-            new T.Vector3(x0 * 0.3 + (i % 2 ? 2 : -2) + (k - 1) * 0.4, -21, 0.2 + i * 0.3)
-          ]);
-          antebraco.add(new T.Mesh(new T.TubeGeometry(curva, 40, 0.11, 8, false), new T.MeshStandardMaterial({ color: cf, roughness: 0.45 })));
-        });
-      });
-      // cabos de linha de pesca das polias até os dedos
-      [[-2.95, -1.6, -5.4], [-0.98, 1.6, -5.4], [0.98, -1.6, -11.2], [2.9, 1.6, -11.2]].forEach(function(c){
-        var curva = new T.CatmullRomCurve3([
-          new T.Vector3(c[1] + 0.9, c[2] - 0.2 - 0.8, 1.9),
-          new T.Vector3(c[0] * 0.8, 0.5, 1.75),
-          new T.Vector3(c[0], 6.5, 1.45),
-          new T.Vector3(c[0], 8.9, 1.0)
+        g.fillStyle = 'rgba(66,232,255,.95)';
+        g.font = 'bold 22px Arial, sans-serif';
+        g.fillText('RTX CYBER // TITAN', 38, h / 2 - 8);
+        g.font = 'bold 13px Arial, sans-serif';
+        g.fillStyle = 'rgba(236,72,153,.85)';
+        g.fillText('FULLSTACK ENGINE · 24GB GDDR6X', 38, h / 2 + 18);
+      }), true);
+
+      // Textura das aletas do dissipador
+      var texAletas = tex(tela(256, 256, function(g, w, h){
+        g.fillStyle = '#4a505b'; g.fillRect(0, 0, w, h);
+        for (var y = 0; y < h; y += 4) {
+          g.fillStyle = '#828a99'; g.fillRect(0, y, w, 2);
+          g.fillStyle = '#22252c'; g.fillRect(0, y + 2, w, 2);
+        }
+      }), false, true);
+      texAletas.repeat.set(1, 8);
+
+      var metalCobre = new T.MeshStandardMaterial({ color: 0xd97736, metalness: 0.95, roughness: 0.25 });
+      var metalPrata = new T.MeshStandardMaterial({ color: 0x9fa8b6, metalness: 0.9, roughness: 0.28 });
+      var metalPreto = fisico({ color: 0x16181d, metalness: 0.85, roughness: 0.35, clearcoat: 0.4, clearcoatRoughness: 0.2 });
+      var ouro = new T.MeshStandardMaterial({ color: 0xe5b84c, metalness: 1, roughness: 0.2 });
+      var plasticoCinza = new T.MeshStandardMaterial({ color: 0x242730, roughness: 0.5 });
+      var ledCianoMat = new T.MeshStandardMaterial({ color: 0x42e8ff, emissive: 0x42e8ff, emissiveIntensity: 1.6, transparent: true, opacity: 0.95 });
+      var ledMagentaMat = new T.MeshStandardMaterial({ color: 0xec4899, emissive: 0xec4899, emissiveIntensity: 1.4, transparent: true, opacity: 0.95 });
+
+      // 1. PCB principal
+      var pcb = new T.Mesh(caixaRed(LARG, ALT, 0.4, 0.15), new T.MeshStandardMaterial({ map: texPcb, roughness: 0.65 }));
+      pcb.position.set(0, 0, -PROF / 2 + 0.2);
+      gpu.add(pcb);
+
+      // 2. Backplate traseiro
+      var backplate = new T.Mesh(caixaRed(LARG - 0.4, ALT - 0.4, 0.3, 0.2), new T.MeshStandardMaterial({ map: texBackplate, metalness: 0.85, roughness: 0.3 }));
+      backplate.position.set(0, 0, -PROF / 2 - 0.15);
+      gpu.add(backplate);
+
+      // 3. Conector PCIe dourado
+      var pcie = new T.Group();
+      var dente1 = new T.Mesh(new T.BoxGeometry(4.2, 1.3, 0.35), ouro);
+      dente1.position.set(-LARG / 2 + 4.2, -ALT / 2 - 0.65, -PROF / 2 + 0.2);
+      var dente2 = new T.Mesh(new T.BoxGeometry(15.5, 1.3, 0.35), ouro);
+      dente2.position.set(-LARG / 2 + 14.8, -ALT / 2 - 0.65, -PROF / 2 + 0.2);
+      pcie.add(dente1); pcie.add(dente2);
+      gpu.add(pcie);
+
+      // 4. Espelho Traseiro I/O Bracket
+      var bracket = new T.Mesh(caixaRed(0.3, ALT + 4.0, PROF + 0.6, 0.1), metalPrata);
+      bracket.position.set(-LARG / 2 - 0.15, -0.6, 0);
+      gpu.add(bracket);
+      for (var p = 0; p < 4; p++) {
+        var porta = new T.Mesh(new T.BoxGeometry(0.35, 0.9, 1.5), metalPreto);
+        porta.position.set(-LARG / 2 - 0.2, -ALT / 2 + 2.2 + p * 2.3, (p % 2 === 0 ? 0.8 : -0.8));
+        gpu.add(porta);
+      }
+
+      // 5. Bloco de Dissipação (Heatsink)
+      var dissipadorMat = new T.MeshStandardMaterial({ map: texAletas, roughness: 0.35, metalness: 0.8 });
+      var dissipador = new T.Mesh(caixaRed(LARG - 2.5, ALT - 1.8, PROF - 1.8, 0.2), dissipadorMat);
+      dissipador.position.set(0.5, 0, 0);
+      gpu.add(dissipador);
+
+      // Heatpipes de cobre
+      var heatpipes = [];
+      [-ALT / 2 + 2.8, 0, ALT / 2 - 2.8].forEach(function(hy){
+        var curvaHp = new T.CatmullRomCurve3([
+          new T.Vector3(-LARG / 2 + 1.5, hy, 0.3),
+          new T.Vector3(-LARG / 2 + 3.5, hy + 0.5, 1.3),
+          new T.Vector3(LARG / 2 - 3.8, hy + 0.5, 1.3),
+          new T.Vector3(LARG / 2 - 1.0, hy, 0.3)
         ]);
-        antebraco.parent.add(new T.Mesh(new T.TubeGeometry(curva, 40, 0.045, 6, false), cabo));
+        var tuboHp = new T.Mesh(new T.TubeGeometry(curvaHp, 32, 0.36, 12, false), metalCobre);
+        gpu.add(tuboHp);
+        heatpipes.push(tuboHp);
       });
 
-      var fechar = 0, aceno = 0, tremor = 0;
+      // 6. Carcaça Frontal (Shroud)
+      var shroudMat = fisico({ color: 0x181a20, metalness: 0.6, roughness: 0.35, clearcoat: 0.4, clearcoatRoughness: 0.2 });
+      var shroud = new T.Mesh(caixaRed(LARG - 0.6, ALT - 0.6, 1.2, 0.5), shroudMat);
+      shroud.position.set(0, 0, PROF / 2 - 0.4);
+      gpu.add(shroud);
+
+      // Detalhes chanfrados na carcaça em neon
+      [[-LARG / 2 + 2.5, ALT / 2 - 1.2], [LARG / 2 - 2.5, ALT / 2 - 1.2], [-LARG / 2 + 2.5, -ALT / 2 + 1.2], [LARG / 2 - 2.5, -ALT / 2 + 1.2]].forEach(function(pos, i){
+        var friso = new T.Mesh(new T.BoxGeometry(3.6, 0.4, 0.3), (i % 2 === 0 ? ledCianoMat : ledMagentaMat));
+        friso.position.set(pos[0], pos[1], PROF / 2 + 0.25);
+        gpu.add(friso);
+      });
+
+      // 7. Sistema de 3 Ventoinhas (Triple Fan Cooling System)
+      var fans = [];
+      var posFansX = [-8.2, 0, 8.2];
+      var raioFan = 3.7;
+
+      posFansX.forEach(function(fx, fanIdx){
+        var fanGrupo = new T.Group();
+        fanGrupo.position.set(fx, 0, PROF / 2 + 0.05);
+
+        // Anel ARGB ao redor da abertura
+        var anelRgb = new T.Mesh(new T.TorusGeometry(raioFan + 0.22, 0.15, 10, 36), (fanIdx === 1 ? ledMagentaMat : ledCianoMat));
+        anelRgb.position.set(fx, 0, PROF / 2 + 0.15);
+        gpu.add(anelRgb);
+
+        // Hub central
+        var hub = new T.Mesh(new T.CylinderGeometry(1.2, 1.3, 0.75, 24), metalPreto);
+        hub.rotation.x = Math.PI / 2;
+        fanGrupo.add(hub);
+
+        var badge = new T.Mesh(new T.CircleGeometry(0.95, 20), (fanIdx === 1 ? ledMagentaMat : ouro));
+        badge.position.z = 0.4;
+        fanGrupo.add(badge);
+
+        // Pás da ventoinha (11 lâminas aerodinâmicas)
+        var numPas = 11;
+        var pasMat = new T.MeshStandardMaterial({
+          color: 0x1e222b, roughness: 0.3, metalness: 0.4,
+          transparent: true, opacity: 0.92
+        });
+
+        for (var p = 0; p < numPas; p++) {
+          var ang = (p / numPas) * Math.PI * 2;
+          var pa = new T.Mesh(new T.BoxGeometry(0.7, 2.3, 0.12), pasMat);
+          pa.position.set(Math.cos(ang) * 2.1, Math.sin(ang) * 2.1, 0.15);
+          pa.rotation.z = ang + 0.45;
+          pa.rotation.y = 0.4;
+          fanGrupo.add(pa);
+        }
+
+        gpu.add(fanGrupo);
+        fans.push({ grupo: fanGrupo, direcao: fanIdx === 1 ? -1 : 1, anel: anelRgb });
+      });
+
+      // 8. Barra de LED no Topo com Logotipo
+      var topoBarra = new T.Group();
+      topoBarra.position.set(0, ALT / 2 + 0.2, 0);
+
+      var topoMoldura = new T.Mesh(caixaRed(LARG - 4, 0.95, PROF - 0.8, 0.2), metalPreto);
+      topoBarra.add(topoMoldura);
+
+      var texLogoTopo = tex(tela(512, 64, function(g, w, h){
+        g.fillStyle = '#06080c'; g.fillRect(0, 0, w, h);
+        g.fillStyle = '#42e8ff'; g.font = 'bold 24px Arial, sans-serif';
+        g.textAlign = 'center'; g.textBaseline = 'middle';
+        g.fillText('RONALDO.DEV · GEFORCE RTX', w / 2, h / 2);
+      }), true);
+
+      var logoPlaca = new T.Mesh(new T.PlaneGeometry(LARG - 7, 0.75), new T.MeshStandardMaterial({
+        map: texLogoTopo, emissive: 0x42e8ff, emissiveIntensity: 1.0, transparent: true
+      }));
+      logoPlaca.rotation.x = -Math.PI / 2;
+      logoPlaca.position.set(0, 0.5, 0);
+      topoBarra.add(logoPlaca);
+
+      // Conector de energia 12VHPWR no topo
+      var plugEnergia = new T.Mesh(caixaRed(2.4, 1.1, 1.3, 0.1), plasticoCinza);
+      plugEnergia.position.set(LARG / 2 - 4.5, 0.75, 0);
+      topoBarra.add(plugEnergia);
+
+      [-0.5, -0.15, 0.15, 0.5].forEach(function(cx, k){
+        var corCabo = k % 2 === 0 ? 0x42e8ff : 0xec4899;
+        var curvaC = new T.CatmullRomCurve3([
+          new T.Vector3(LARG / 2 - 4.5 + cx, 1.1, 0),
+          new T.Vector3(LARG / 2 - 4.5 + cx * 1.4, 2.8, 0.6),
+          new T.Vector3(LARG / 2 - 3.5 + cx * 1.8, 5.0, 1.6)
+        ]);
+        var tuboC = new T.Mesh(new T.TubeGeometry(curvaC, 20, 0.15, 8, false), new T.MeshStandardMaterial({ color: corCabo, roughness: 0.5 }));
+        topoBarra.add(tuboC);
+      });
+
+      gpu.add(topoBarra);
+
+      // Sprite de glow halo ARGB frontal
+      var glowCentral = sprite(brilho('rgba(66,232,255,1)'), 15, 0x42e8ff);
+      glowCentral.position.set(0, 0, PROF / 2 + 1.0);
+      glowCentral.material.opacity = 0.35;
+      gpu.add(glowCentral);
+
+      // Estados de animação interativa
+      var velBase = 7.0; // rotação padrão das ventoinhas (rad/s)
+      var velBoost = 0;
+      var flashLuz = 0;
+      var tremor = 0;
+      var festa = 0;
+
       return {
-        grupo: mao, escala: 1.16, cor: [235, 210, 150],
+        grupo: gpu, escala: 0.85, cor: [66, 232, 255],
         atualizar: function(dt, t, giro){
-          fechar = Math.max(0, fechar - dt * 0.9);
-          aceno = Math.max(0, aceno - dt * 1.6);
-          tremor = Math.max(0, tremor - dt * 2.5);
-          giro.rotation.set(0.12 + Math.sin(t * 0.4) * 0.05, -0.38 + Math.sin(t * 0.3) * 0.28, Math.sin(t * 0.5) * 0.05 + Math.sin(t * 14) * aceno * 0.18);
-          giro.position.x = (Math.random() - 0.5) * tremor;
-          dedos.forEach(function(d, i){
-            var onda = Math.pow(Math.max(0, Math.sin(t * 1.5 - i * 0.65)), 2);
-            var c = Math.max(0.1 + onda * 0.55, fechar);
-            if (i === 4) c = Math.max(0.15 + 0.3 * (0.5 + 0.5 * Math.sin(t * 1.1)), fechar * 0.8);
-            var angulos = i === 4 ? [0.7, 0.9] : [1.25, 1.45, 1.1];
-            d.juntas.forEach(function(j, k){ j.rotation.x = c * angulos[k]; });
-          });
-          polias.forEach(function(p, i){ p.rotation.z = (dedos[i] ? (fechar + Math.sin(t * 1.5 - i * 0.65)) : 0) * 1.8; });
+          velBoost = Math.max(0, velBoost - dt * 4.0);
+          flashLuz = Math.max(0, flashLuz - dt * 2.0);
+          tremor = Math.max(0, tremor - dt * 3.0);
+          festa = Math.max(0, festa - dt * 0.7);
+
+          // Rotação suave da placa no espaço 3D para exibir frente, topo e lateral
+          giro.rotation.set(
+            0.18 + Math.sin(t * 0.45) * 0.08,
+            -0.35 + Math.sin(t * 0.35) * 0.38,
+            Math.sin(t * 0.5) * 0.06
+          );
+
+          if (tremor > 0) {
+            giro.position.x = (Math.random() - 0.5) * tremor * 0.5;
+            giro.position.y = (Math.random() - 0.5) * tremor * 0.3;
+          } else {
+            giro.position.x = 0;
+            giro.position.y = 0;
+          }
+
+          // Rotação contínua dos 3 fans (aceleram no boost)
+          var velRot = (velBase + velBoost * 22.0 + festa * 30.0) * dt;
+          for (var f = 0; f < fans.length; f++) {
+            fans[f].grupo.rotation.z += velRot * fans[f].direcao;
+            // Ondulação de iluminação nos anéis ARGB
+            var ondaRgb = 0.7 + 0.3 * Math.sin(t * 3.5 + f * 1.5);
+            fans[f].anel.material.emissiveIntensity = (ondaRgb + flashLuz * 2.0 + festa * 2.5);
+          }
+
+          // Iluminação do logotipo superior
+          var intensidadeLogo = 1.0 + 0.5 * Math.sin(t * 2.5) + flashLuz * 2.0 + festa * 2.0;
+          logoPlaca.material.emissiveIntensity = intensidadeLogo;
+          glowCentral.material.opacity = Math.min(1.0, 0.25 + 0.2 * Math.sin(t * 2.5) + flashLuz * 0.5 + festa * 0.5);
         },
         evento: function(nome){
-          if (nome === 'soco') fechar = 1;
-          else if (nome === 'pulo' || nome === 'coleta') aceno = Math.max(aceno, 0.6);
-          else if (nome === 'dano') tremor = 1.2;
-          else if (nome === 'trofeu') fechar = 0.8;
+          if (nome === 'soco') {
+            velBoost = 1.6; flashLuz = 1.2;
+          } else if (nome === 'pulo') {
+            velBoost = Math.max(velBoost, 0.9); flashLuz = 0.7;
+          } else if (nome === 'coleta') {
+            velBoost = 1.2; flashLuz = 1.0;
+          } else if (nome === 'dano') {
+            tremor = 1.8;
+          } else if (nome === 'trofeu') {
+            velBoost = 2.0; flashLuz = 1.5; festa = 1.2;
+          }
         }
       };
     }
@@ -771,12 +855,447 @@ PV.cena3d = (function(){
     }
 
     /* ==========================================================
+       CIDADE WIREFRAME · megacidade neon que recebe o visitante
+       nas fases de abertura, com grade synthwave e dados subindo
+       ========================================================== */
+    function criarCidade(){
+      var rnd = semente(20261117);
+      var cidade = new T.Group();
+
+      // chão em grade, como um simulador de synthwave
+      var grade = new T.GridHelper(58, 26, 0xb026ff, 0x7928ca);
+      grade.material.transparent = true;
+      grade.material.opacity = 0.3;
+      grade.position.y = -0.02;
+      cidade.add(grade);
+
+      // torres: caixas escuras com arestas neon alternando ciano e roxo
+      var innerGrupo = new T.Group();
+      cidade.add(innerGrupo);
+      var sobras = [];
+      for (var i = 0; i < 15; i++) {
+        var lado = (i % 2 === 0 ? 1 : -1) * (2.2 + rnd() * 9.5);
+        var z = (rnd() - 0.5) * 22;
+        var w = 1.6 + rnd() * 2.6, h = 4 + rnd() * 11, d = 1.6 + rnd() * 2.6;
+        var b = new T.Mesh(
+          new T.BoxGeometry(w, h, d),
+          new T.MeshBasicMaterial({ color: 0x0a0614 })
+        );
+        b.position.set(lado, h / 2, z);
+        innerGrupo.add(b);
+        var arestas = new T.LineSegments(
+          new T.EdgesGeometry(b.geometry),
+          new T.LineBasicMaterial({ color: (i % 3 === 0) ? 0x42e8ff : 0xb026ff, transparent: true, opacity: 0.55 + rnd() * 0.3 })
+        );
+        arestas.position.copy(b.position);
+        innerGrupo.add(arestas);
+        sobras.push({ arestas: arestas, fase: rnd() * 6.28, base: arestas.material.opacity });
+        // antena com luz magenta piscando no topo de algumas torres
+        if (rnd() > 0.55) {
+          var luz = sprite(brilho('rgba(236,72,153,1)'), 2.6, 0xec4899);
+          luz.position.set(lado, h + 1.2, z);
+          innerGrupo.add(luz);
+          sobras.push({ luz: luz, fase: rnd() * 6.28 });
+        }
+      }
+
+      // sol synthwave de fundo, magenta, meio afundado na grade
+      var sol = sprite(brilho('rgba(236,72,153,1)'), 26, 0xec4899);
+      sol.material.opacity = 0.5;
+      sol.position.set(0, 6, -26);
+      cidade.add(sol);
+
+      // fagulhas de informação subindo da grade
+      var qtd = 90, cores = new Float32Array(qtd * 3), pos = new Float32Array(qtd * 3), fases = [];
+      for (var k = 0; k < qtd; k++) {
+        pos[k * 3] = (rnd() - 0.5) * 46;
+        pos[k * 3 + 1] = rnd() * 16;
+        pos[k * 3 + 2] = (rnd() - 0.5) * 30;
+        fases.push(rnd() * 10);
+        cores[k * 3] = 0.26; cores[k * 3 + 1] = 0.91; cores[k * 3 + 2] = 1;
+      }
+      var geoDados = new T.BufferGeometry();
+      geoDados.setAttribute('position', new T.BufferAttribute(pos, 3));
+      geoDados.setAttribute('color', new T.BufferAttribute(cores, 3));
+      var dados = new T.Points(geoDados, new T.PointsMaterial({
+        size: 0.55, map: tex(brilho('rgba(120,240,255,1)'), true), vertexColors: true,
+        transparent: true, blending: T.AdditiveBlending, depthWrite: false
+      }));
+      cidade.add(dados);
+
+      var flash = 0;
+      return {
+        grupo: cidade, escala: 1.5, cor: [176, 38, 255],
+        atualizar: function(dt, t, giro){
+          flash = Math.max(0, flash - dt * 0.9);
+          innerGrupo.rotation.y += 0.1 * dt;
+          giro.rotation.x = 0.06 + Math.sin(t * 0.4) * 0.03;
+          for (var i2 = 0; i2 < sobras.length; i2++) {
+            var s = sobras[i2];
+            if (s.arestas) s.arestas.material.opacity = s.base * (0.72 + 0.28 * Math.sin(t * 1.8 + s.fase)) + flash * 0.4;
+            else if (s.luz) s.luz.material.opacity = 0.35 + 0.65 * Math.pow(Math.max(0, Math.sin(t * 2.4 + s.fase)), 8);
+          }
+          sol.material.opacity = 0.42 + 0.1 * Math.sin(t * 0.7) + flash * 0.5;
+          var vv = 3.2 + flash * 9;
+          for (var k2 = 0; k2 < qtd; k2++) {
+            pos[k2 * 3 + 1] += dt * vv;
+            if (pos[k2 * 3 + 1] > 17) pos[k2 * 3 + 1] = 0;
+            var br2 = 0.4 + 0.6 * Math.pow(Math.max(0, Math.sin(t * 2 + fases[k2])), 5);
+            cores[k2 * 3] = br2 * 0.35; cores[k2 * 3 + 1] = br2 * 0.9; cores[k2 * 3 + 2] = br2;
+          }
+          geoDados.attributes.position.needsUpdate = true;
+          geoDados.attributes.color.needsUpdate = true;
+        },
+        evento: function(nome){
+          if (nome === 'pouso') flash = 0.8;
+          else if (nome === 'coleta' || nome === 'soco') flash = Math.max(flash, 0.5);
+        }
+      };
+    }
+
+    /* ==========================================================
+       PEÇA 5 · ROBOZINHO CYBERPUNK "OLÁ!" (unidade = centímetro)
+       Androide flutuante futurista com visor digital emotivo,
+       antena com LED pulsante, braço robótico articulado acenando,
+       propulsor antigravitacional e balão holográfico dizendo "Olá!".
+       ========================================================== */
+    function criarRobozinho(){
+      var rnd = semente(9001);
+      var robo = new T.Group();
+
+      // Materiais limpos e luminosos
+      var chassiBranco = fisico({ color: 0xf8fafc, roughness: 0.18, metalness: 0.12, clearcoat: 0.9, clearcoatRoughness: 0.08 });
+      var metalTitânio = fisico({ color: 0x475569, roughness: 0.32, metalness: 0.82, clearcoat: 0.4 });
+      var metalPrata = new T.MeshStandardMaterial({ color: 0xd8e0ec, metalness: 0.92, roughness: 0.2 });
+      var cianoNeon = new T.MeshStandardMaterial({ color: 0x42e8ff, emissive: 0x42e8ff, emissiveIntensity: 1.8, transparent: true, opacity: 0.95 });
+      var magentaNeon = new T.MeshStandardMaterial({ color: 0xec4899, emissive: 0xec4899, emissiveIntensity: 1.5, transparent: true, opacity: 0.95 });
+      var lenteOlhoMat = new T.MeshStandardMaterial({ color: 0x42e8ff, emissive: 0x42e8ff, emissiveIntensity: 2.2, roughness: 0.1 });
+
+      // 1. Cabeça do Robozinho (Esférica, aerodinâmica e limpa, sem placas ou telas coladas)
+      var cabecaGrupo = new T.Group();
+      cabecaGrupo.position.set(0, 3.8, 0);
+
+      // Capacete esférico contínuo e liso
+      var capacete = new T.Mesh(new T.SphereGeometry(3.5, 48, 36), chassiBranco);
+      capacete.scale.set(1.03, 0.98, 1.02);
+      cabecaGrupo.add(capacete);
+
+      // Olhos robóticos 3D expressivos (embutidos organicamente na curvatura da face)
+      var olhos = [];
+      [-1.15, 1.15].forEach(function(ox, idx){
+        var olhoGrupo = new T.Group();
+        var rotY = ox > 0 ? 0.26 : -0.26;
+        olhoGrupo.position.set(ox, 0.4, 3.16);
+        olhoGrupo.rotation.set(-0.06, rotY, 0);
+
+        // Aro circular de acabamento em titânio/cromo
+        var aroOlho = new T.Mesh(new T.TorusGeometry(0.68, 0.07, 10, 32), metalPrata);
+        olhoGrupo.add(aroOlho);
+
+        // Lente em cúpula de LED ciano brilhante
+        var lenteOlho = new T.Mesh(new T.SphereGeometry(0.62, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.55), lenteOlhoMat);
+        lenteOlho.position.z = -0.1;
+        olhoGrupo.add(lenteOlho);
+
+        // Pupila/íris digital interna
+        var pupila = new T.Mesh(new T.RingGeometry(0.2, 0.42, 24), new T.MeshBasicMaterial({ color: 0xffffff, side: T.DoubleSide }));
+        pupila.position.z = 0.45;
+        olhoGrupo.add(pupila);
+
+        // Glow neon ao redor do olho
+        var glowOlho = sprite(brilho('rgba(66,232,255,1)'), 2.6, 0x42e8ff);
+        glowOlho.position.z = 0.5;
+        olhoGrupo.add(glowOlho);
+
+        cabecaGrupo.add(olhoGrupo);
+        olhos.push({ grupo: olhoGrupo, lente: lenteOlho, pupila: pupila, glow: glowOlho });
+      });
+
+      // Bochechas amigáveis com blush suave magenta neon
+      [-1.6, 1.6].forEach(function(bx){
+        var blush = sprite(brilho('rgba(236,72,153,1)'), 1.8, 0xec4899);
+        blush.position.set(bx, -0.25, 3.12);
+        blush.material.opacity = 0.55;
+        cabecaGrupo.add(blush);
+      });
+
+      // Sorriso digital sutil em arco neon ciano (embutido na face)
+      var sorriso = new T.Mesh(new T.TorusGeometry(0.48, 0.045, 8, 24, Math.PI * 0.75), cianoNeon);
+      sorriso.rotation.set(0.12, 0, Math.PI * 1.125);
+      sorriso.position.set(0, -0.42, 3.32);
+      cabecaGrupo.add(sorriso);
+
+      // Antena no topo da cabeça
+      var hasteAntena = new T.Mesh(new T.CylinderGeometry(0.08, 0.12, 1.8, 12), metalPrata);
+      hasteAntena.position.set(0, 4.2, -0.2);
+      cabecaGrupo.add(hasteAntena);
+
+      var bolaAntena = new T.Mesh(new T.SphereGeometry(0.35, 16, 12), magentaNeon);
+      bolaAntena.position.set(0, 5.1, -0.2);
+      cabecaGrupo.add(bolaAntena);
+
+      var haloAntena = sprite(brilho('rgba(236,72,153,1)'), 3.2, 0xec4899);
+      haloAntena.position.set(0, 5.1, -0.2);
+      cabecaGrupo.add(haloAntena);
+
+      // Módulos laterais (fones futuristas com anéis neon)
+      [-3.5, 3.5].forEach(function(sideX){
+        var fone = new T.Mesh(new T.CylinderGeometry(0.85, 0.85, 0.5, 24), metalTitânio);
+        fone.rotation.z = Math.PI / 2;
+        fone.position.set(sideX, 0, 0);
+        cabecaGrupo.add(fone);
+
+        var anelFone = new T.Mesh(new T.TorusGeometry(0.86, 0.08, 8, 24), cianoNeon);
+        anelFone.rotation.y = Math.PI / 2;
+        anelFone.position.set(sideX + (sideX > 0 ? 0.28 : -0.28), 0, 0);
+        cabecaGrupo.add(anelFone);
+      });
+
+      robo.add(cabecaGrupo);
+
+      // 2. Tronco / Corpo do Robozinho
+      var corpoGrupo = new T.Group();
+      corpoGrupo.position.set(0, -0.2, 0);
+
+      var pescoco = new T.Mesh(new T.CylinderGeometry(1.3, 1.5, 0.7, 20), metalTitânio);
+      pescoco.position.set(0, 2.7, 0);
+      corpoGrupo.add(pescoco);
+
+      var torso = new T.Mesh(new T.SphereGeometry(2.9, 32, 24), chassiBranco);
+      torso.scale.set(0.95, 1.15, 0.95);
+      torso.position.set(0, 0.8, 0);
+      corpoGrupo.add(torso);
+
+      // Painel peitoral com núcleo de energia (Reator Ciano)
+      var painelPeito = new T.Mesh(new T.CylinderGeometry(1.15, 1.15, 0.25, 24), metalPrata);
+      painelPeito.rotation.x = Math.PI / 2;
+      painelPeito.position.set(0, 1.2, 2.7);
+      corpoGrupo.add(painelPeito);
+
+      var reatorLuz = new T.Mesh(new T.CircleGeometry(0.85, 24), cianoNeon);
+      reatorLuz.position.set(0, 1.2, 2.85);
+      corpoGrupo.add(reatorLuz);
+
+      var reatorGlow = sprite(brilho('rgba(66,232,255,1)'), 5.0, 0x42e8ff);
+      reatorGlow.position.set(0, 1.2, 2.9);
+      corpoGrupo.add(reatorGlow);
+
+      // Faixa decorativa neon magenta na cintura
+      var faixaTorso = new T.Mesh(new T.TorusGeometry(2.65, 0.08, 8, 36), magentaNeon);
+      faixaTorso.rotation.x = Math.PI / 2;
+      faixaTorso.position.set(0, 0.3, 0);
+      corpoGrupo.add(faixaTorso);
+
+      // 3. Braço Esquerdo (Descansando com atitude amigável)
+      var bracoEsq = new T.Group();
+      bracoEsq.position.set(-3.0, 1.4, 0);
+
+      var ombroE = new T.Mesh(new T.SphereGeometry(0.6, 16, 12), metalTitânio);
+      bracoEsq.add(ombroE);
+
+      var membroE = new T.Mesh(caixaRed(0.75, 2.3, 0.75, 0.2), chassiBranco);
+      membroE.position.set(-0.35, -1.1, 0.15);
+      membroE.rotation.z = -0.22;
+      bracoEsq.add(membroE);
+
+      var maoE = new T.Mesh(new T.SphereGeometry(0.42, 14, 10), metalPrata);
+      maoE.position.set(-0.65, -2.3, 0.35);
+      bracoEsq.add(maoE);
+      corpoGrupo.add(bracoEsq);
+
+      // 4. Braço Direito Erguido Acenando (Wave Arm)
+      var bracoDir = new T.Group();
+      bracoDir.position.set(3.0, 1.4, 0);
+
+      var ombroD = new T.Mesh(new T.SphereGeometry(0.6, 16, 12), metalTitânio);
+      bracoDir.add(ombroD);
+
+      var antebracoD = new T.Group();
+      antebracoD.position.set(0.6, 0.5, 0);
+      antebracoD.rotation.z = -0.92;
+
+      var membroD = new T.Mesh(caixaRed(0.75, 2.2, 0.75, 0.2), chassiBranco);
+      membroD.position.set(0, 1.0, 0);
+      antebracoD.add(membroD);
+
+      var maoD = new T.Group();
+      maoD.position.set(0, 2.15, 0);
+
+      var palmaD = new T.Mesh(new T.SphereGeometry(0.46, 16, 12), metalPrata);
+      maoD.add(palmaD);
+
+      [-0.24, 0, 0.24].forEach(function(dx){
+        var dedo = new T.Mesh(new T.CylinderGeometry(0.08, 0.08, 0.55, 8), metalPrata);
+        dedo.position.set(dx, 0.42, 0);
+        maoD.add(dedo);
+      });
+
+      antebracoD.add(maoD);
+      bracoDir.add(antebracoD);
+      corpoGrupo.add(bracoDir);
+
+      // 5. Propulsor Antigravitacional Inferior (Thruster)
+      var propulsor = new T.Mesh(new T.ConeGeometry(1.5, 1.7, 24), metalTitânio);
+      propulsor.position.set(0, -1.9, 0);
+      corpoGrupo.add(propulsor);
+
+      var anelFogo = new T.Mesh(new T.TorusGeometry(1.4, 0.11, 8, 28), cianoNeon);
+      anelFogo.rotation.x = Math.PI / 2;
+      anelFogo.position.set(0, -1.8, 0);
+      corpoGrupo.add(anelFogo);
+
+      var chamaThruster = sprite(brilho('rgba(66,232,255,1)'), 8.0, 0x42e8ff);
+      chamaThruster.position.set(0, -3.2, 0);
+      chamaThruster.material.opacity = 0.7;
+      corpoGrupo.add(chamaThruster);
+
+      robo.add(corpoGrupo);
+
+      // 6. BALÃO HOLOGRÁFICO "OLÁ!" (Fundo translúcido neon sem manchas pretas)
+      var balaoGrupo = new T.Group();
+      balaoGrupo.position.set(5.2, 4.8, 1.2);
+
+      var texBalao = tex(tela(512, 256, function(g, w, h){
+        g.clearRect(0, 0, w, h);
+        var r = 36;
+        var bx = 20, by = 20, bw = w - 40, bh = h - 65;
+
+        // Fundo gradiente translúcido cibernético luminoso (sem preto chapado)
+        var gradFundo = g.createLinearGradient(bx, by, bx + bw, by + bh);
+        gradFundo.addColorStop(0, 'rgba(15, 30, 68, 0.68)');
+        gradFundo.addColorStop(0.5, 'rgba(32, 18, 58, 0.65)');
+        gradFundo.addColorStop(1, 'rgba(48, 12, 60, 0.68)');
+        g.fillStyle = gradFundo;
+
+        g.beginPath();
+        g.moveTo(bx + r, by);
+        g.lineTo(bx + bw - r, by);
+        g.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
+        g.lineTo(bx + bw, by + bh - r);
+        g.quadraticCurveTo(bx + bw, by + bh, bx + bw - r, by + bh);
+        g.lineTo(bx + 75, by + bh);
+        g.lineTo(bx + 35, by + bh + 36);
+        g.lineTo(bx + 50, by + bh);
+        g.lineTo(bx + r, by + bh);
+        g.quadraticCurveTo(bx, by + bh, bx, by + bh - r);
+        g.lineTo(bx, by + r);
+        g.quadraticCurveTo(bx, by, bx + r, by);
+        g.closePath();
+        g.fill();
+
+        // Borda neon vibrante
+        g.lineWidth = 5;
+        var gradBorda = g.createLinearGradient(0, 0, w, h);
+        gradBorda.addColorStop(0, '#42e8ff');
+        gradBorda.addColorStop(0.5, '#b026ff');
+        gradBorda.addColorStop(1, '#ec4899');
+        g.strokeStyle = gradBorda;
+        g.shadowColor = '#42e8ff';
+        g.shadowBlur = 16;
+        g.stroke();
+
+        // Texto principal com brilho
+        g.shadowBlur = 12;
+        g.shadowColor = '#42e8ff';
+        g.fillStyle = '#ffffff';
+        g.font = '900 68px Arial, sans-serif';
+        g.textAlign = 'center';
+        g.fillText('Olá! 👋', w / 2, 94);
+
+        // Subtítulo
+        g.shadowBlur = 0;
+        g.fillStyle = '#42e8ff';
+        g.font = 'bold 28px Arial, sans-serif';
+        g.fillText('VAMOS CONVERSAR?', w / 2, 148);
+      }), true);
+
+      var balaoMesh = new T.Mesh(new T.PlaneGeometry(7.2, 3.6), new T.MeshBasicMaterial({
+        map: texBalao, transparent: true, side: T.DoubleSide, depthWrite: false
+      }));
+      balaoGrupo.add(balaoMesh);
+      robo.add(balaoGrupo);
+
+      // Estados de animação
+      var velAceno = 6.0;
+      var boostAceno = 0;
+      var flashLuz = 0;
+      var tremor = 0;
+      var festa = 0;
+
+      return {
+        grupo: robo, escala: 1.25, cor: [66, 232, 255],
+        atualizar: function(dt, t, giro){
+          boostAceno = Math.max(0, boostAceno - dt * 2.0);
+          flashLuz = Math.max(0, flashLuz - dt * 1.5);
+          tremor = Math.max(0, tremor - dt * 3.0);
+          festa = Math.max(0, festa - dt * 0.7);
+
+          // Flutuação suave (hover)
+          robo.position.y = Math.sin(t * 2.2) * 0.45;
+
+          // Rotação suave da cabeça e do corpo
+          giro.rotation.y = -0.22 + Math.sin(t * 0.6) * 0.22;
+          giro.rotation.x = 0.08 + Math.sin(t * 0.5) * 0.04;
+          cabecaGrupo.rotation.y = Math.sin(t * 1.5) * 0.15;
+          cabecaGrupo.rotation.z = Math.sin(t * 2.0) * 0.04;
+
+          // Aceno da mãozinha
+          var acenoFreq = (velAceno + boostAceno * 10.0 + festa * 14.0);
+          maoD.rotation.z = Math.sin(t * acenoFreq) * 0.55;
+
+          // Flutuação do balão holográfico
+          balaoGrupo.position.y = 4.8 + Math.sin(t * 2.8) * 0.22;
+          balaoGrupo.rotation.z = Math.sin(t * 2.2) * 0.04;
+
+          // Jato do propulsor pulsando
+          chamaThruster.scale.set(
+            1.0 + Math.sin(t * 14) * 0.15,
+            1.0 + Math.cos(t * 14) * 0.25 + boostAceno * 0.4,
+            1.0
+          );
+          chamaThruster.material.opacity = 0.65 + 0.25 * Math.sin(t * 12) + flashLuz * 0.3;
+
+          // Luz da antena pulsando
+          bolaAntena.material.emissiveIntensity = 1.2 + 0.8 * Math.sin(t * 4.0) + flashLuz * 2.0 + festa * 2.0;
+          haloAntena.material.opacity = 0.4 + 0.3 * Math.sin(t * 4.0) + flashLuz * 0.5;
+
+          // Brilho pulsante dos olhos em LED ciano
+          lenteOlhoMat.emissiveIntensity = 2.0 + 0.5 * Math.sin(t * 3.0) + flashLuz * 1.8 + festa * 2.0;
+
+          // Tremor em dano
+          if (tremor > 0) {
+            giro.position.x = (Math.random() - 0.5) * tremor * 0.5;
+            giro.position.y = (Math.random() - 0.5) * tremor * 0.3;
+          } else {
+            giro.position.x = 0;
+            giro.position.y = 0;
+          }
+        },
+        evento: function(nome){
+          if (nome === 'pulo') {
+            boostAceno = 1.5; flashLuz = 1.0;
+          } else if (nome === 'soco') {
+            boostAceno = 2.0; flashLuz = 1.2;
+          } else if (nome === 'coleta') {
+            boostAceno = 1.2; flashLuz = 0.8;
+          } else if (nome === 'dano') {
+            tremor = 1.5;
+          } else if (nome === 'trofeu') {
+            boostAceno = 2.5; flashLuz = 1.5; festa = 1.2;
+          }
+        }
+      };
+    }
+
+    /* ==========================================================
        PALCO: quando cada peça aparece, onde fica e como sai
        ========================================================== */
     var PECAS = [
+      { criar: criarCidade, de: 0, ate: 1 },
       { criar: criarPlaca, de: 2, ate: 4 },
-      { criar: criarMao, de: 5, ate: 7 },
-      { criar: criarTrofeu, de: 8, ate: 9 }
+      { criar: criarPlacaVideo, de: 5, ate: 7 },
+      { criar: criarTrofeu, de: 8, ate: 9 },
+      { criar: criarRobozinho, de: 10, ate: 10 }
     ];
     var luzFundo = brilho('rgba(255,255,255,1)');
 

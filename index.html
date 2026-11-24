@@ -7,7 +7,7 @@
 <meta name="author" content="Ronaldo Avansini">
 <meta name="robots" content="index,follow">
 <meta name="description" content="Portfólio de Ronaldo Avansini, bacharel em Ciência da Computação. Projetos de desenvolvimento Full Stack, backend, integração de sistemas e engenharia de dados.">
-<meta name="theme-color" content="#0a061a">
+<meta name="theme-color" content="#ff2e93">
 <link rel="canonical" href="https://getsuga01.github.io/Portif-fio/">
 
 <!-- Open Graph: pré-visualização ao compartilhar no LinkedIn/WhatsApp -->
@@ -16,7 +16,7 @@
 <meta property="og:url" content="https://getsuga01.github.io/Portif-fio/">
 <meta property="og:title" content="Ronaldo Avansini | Desenvolvedor Full Stack">
 <meta property="og:description" content="Portfólio jogável de projetos Full Stack: backend, integração de sistemas, dados e cloud. TechFix ERP, Chaos Engineering AWS, integração Oracle e Finnace_Tech.">
-<meta property="og:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.png">
+<meta property="og:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Ronaldo Avansini — Desenvolvedor Full Stack, portfólio jogável">
@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ronaldo Avansini | Desenvolvedor Full Stack">
 <meta name="twitter:description" content="Portfólio jogável de projetos Full Stack: backend, integração de sistemas, dados e cloud.">
-<meta name="twitter:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.png">
+<meta name="twitter:image" content="https://getsuga01.github.io/Portif-fio/assets/og-cover.jpg">
 
 <!-- Dados estruturados -->
 <script type="application/ld+json">
@@ -52,11 +52,26 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="css/gta6.css">
 </head>
 <body>
 <a class="pular-conteudo" href="#perfil">Pular para o conteúdo</a>
+
+<!-- elementos visuais GTA VI / Vice City -->
+<div class="grade-neon" aria-hidden="true"></div>
+<div class="linha-hud top" aria-hidden="true"></div>
+<div class="linha-hud bottom" aria-hidden="true"></div>
+<div class="linha-hud left" aria-hidden="true"></div>
+<div class="linha-hud right" aria-hidden="true"></div>
+<div class="canto-hud tl" aria-hidden="true"></div>
+<div class="canto-hud tr" aria-hidden="true"></div>
+<div class="canto-hud bl" aria-hidden="true"></div>
+<div class="canto-hud br" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="palma-silhueta esq" aria-hidden="true"></div>
+<div class="palma-silhueta dir" aria-hidden="true"></div>
 
 <!-- fundo animado (canvas 2D, atrás do conteúdo) -->
 <canvas id="fundo" aria-hidden="true"></canvas>
@@ -86,6 +101,13 @@
       <a href="#servicos">Serviços</a><a href="#stats">Métricas</a><a href="#contato">Contato</a>
     </nav>
   </details>
+  <button class="gta-wanted" id="gtaWanted" type="button" title="Nível de Procurado (clique para alternar)" aria-label="Nível de procurado: 1 de 5 estrelas">
+    <span class="gta-star ativa" aria-hidden="true">★</span>
+    <span class="gta-star" aria-hidden="true">★</span>
+    <span class="gta-star" aria-hidden="true">★</span>
+    <span class="gta-star" aria-hidden="true">★</span>
+    <span class="gta-star" aria-hidden="true">★</span>
+  </button>
   <button class="botao-pixel mini" type="button" data-acao="jogar"><span class="rotulo-jogar">▶ Jogar</span></button>
   <div class="progresso" id="progresso"></div>
 </header>
@@ -94,11 +116,12 @@
 
   <!-- ===================== FASE 00 · INÍCIO ===================== -->
   <section class="fase heroi" id="topo" data-fase="0" data-nome="Início">
+    <div class="heroi-cidade" aria-hidden="true"></div>
     <div class="heroi-grade">
       <div class="heroi-topo">
         <div class="status-badge" data-plat>
           <span class="status-ponto"></span>
-          <span>DISPONÍVEL PARA PROJETOS & OPORTUNIDADES</span>
+          <span>LEONIDA · VICE CITY EDITION // DISPONÍVEL PARA MISSÕES</span>
         </div>
         <h1 class="titulo" aria-label="Ronaldo Avansini">
           <span class="linha" data-plat data-pouso data-letras>RONALDO</span>
@@ -263,7 +286,7 @@
 
     <article class="obra">
       <div class="obra-media cartao" data-plat data-bugs="2" data-skill="Next.js|TypeScript" data-sx="0.3|0.8">
-        <div style="background:linear-gradient(145deg,rgba(176,38,255,.22),rgba(121,40,202,.15),#07040d);padding:44px 26px;border-radius:10px;text-align:center;">
+        <div style="background:linear-gradient(rgba(7,4,13,.6),rgba(7,4,13,.8)),url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop') center/cover;padding:44px 26px;border-radius:10px;text-align:center;">
           <p style="font-family:var(--f-pixel);font-size:24px;color:var(--roxo-claro);margin-bottom:8px;">TECHFIX ERP</p>
           <p style="font-size:14px;color:var(--texto-2);">FSM State Machine · Transações Atômicas · RBAC · Laudos PDF</p>
           <p style="margin-top:18px;"><span class="kicker" style="background:rgba(236,72,153,.2);border-color:var(--latao);color:#fff;">65 TESTES AUTOMATIZADOS</span></p>
@@ -283,6 +306,7 @@
   <!-- ===================== FASE 05 · CHAOS ENGINEERING & RESILIÊNCIA ===================== -->
   <section class="fase esq" id="chaos" data-fase="5" data-nome="Chaos Eng.">
     <span class="fase-num" aria-hidden="true">5</span>
+    <div class="fase-fundo" aria-hidden="true" style="--img:url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop')"></div>
     <div class="web-grade">
       <div class="col">
         <p class="kicker">Fase 5</p>
@@ -342,7 +366,7 @@
     <div class="puppet-grade">
       <div class="galeria">
         <div class="media larga cartao" data-plat data-skill="Python|Oracle" data-sx="0.3|0.8" data-bugs="1">
-          <div style="background:linear-gradient(145deg,rgba(176,38,255,.25),rgba(236,72,153,.15),#07040d);padding:46px 22px;border-radius:10px;text-align:center;">
+          <div style="background:linear-gradient(rgba(7,4,13,.58),rgba(7,4,13,.82)),url('https://images.unsplash.com/photo-1541888946425-d81bb19640f3?q=80&w=1200&auto=format&fit=crop') center/cover;padding:46px 22px;border-radius:10px;text-align:center;">
             <p style="font-family:var(--f-pixel);font-size:22px;color:var(--roxo-claro);">PIPELINE SISTEMA DE CAMPO → ORACLE ERP</p>
             <p style="font-size:14px;color:var(--texto-2);margin-top:8px;">Dead-Letter Queue · Contratos de Dados · Painel de Auditoria &amp; Conciliação</p>
             <p style="margin-top:16px;"><a class="botao-pixel mini" href="https://github.com/Getsuga01/erp-campo" target="_blank" rel="noopener">Ver Repositório no GitHub →</a></p>
@@ -378,6 +402,11 @@
       <p class="lead" data-plat data-bits="4">Projeto demonstrativo de serviços financeiros e operações de crédito, simulando componentes de um fluxo Banking-as-a-Service.</p>
       <p data-plat data-bugs="1">Composto por quatro módulos em ambiente de demonstração: <strong>Simulador Pix BaaS</strong>, <strong>Motor de Decisão e Risco de Crédito</strong>, <strong>Plataforma White-Label Multi-Tenant</strong> e esteira de infraestrutura automatizada com <strong>Terraform (IaC)</strong>.</p>
     </div>
+
+    <figure class="banner-cyber cartao" data-plat>
+      <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1200&auto=format&fit=crop" alt="" loading="lazy" decoding="async">
+      <figcaption>ECOSSISTEMA FINNACE_TECH · PIX BAAS · MOTOR DE CRÉDITO · WHITE-LABEL MULTI-TENANT · IAC</figcaption>
+    </figure>
 
 <pre class="codigo cartao" data-plat data-skill="Python" data-sx="0.88" data-glitch="2" data-bugs="1"><code><span class="c"># Motor de Decisão de Risco de Crédito &amp; Score Dinâmico</span>
 <span class="k">from</span> dataclasses <span class="k">import</span> dataclass
@@ -501,28 +530,93 @@
       <h2 class="grande" data-plat data-pouso data-letras>Vamos conversar</h2>
       <p class="lead" data-plat data-bits="5">Quer falar sobre oportunidades profissionais, projetos full stack,
         sistemas sob medida ou trocar uma ideia sobre tecnologia? Me chame por e-mail, WhatsApp ou LinkedIn!</p>
+
+      <div class="contato-robo-banner cartao" data-plat>
+        <div class="robo-avatar-badge">
+          <span class="robo-avatar-icon" aria-hidden="true">🤖</span>
+          <span class="robo-status-pulse" aria-hidden="true"></span>
+        </div>
+        <div class="robo-fala">
+          <p class="robo-saudacao"><b>Assistente Virtual:</b> "Olá! 👋 Ronaldo está online e pronto para novas conexões."</p>
+          <p class="robo-sub">Selecione seu canal preferido abaixo para iniciar uma conversa direta.</p>
+        </div>
+      </div>
     </div>
 
     <div class="canais">
       <a class="canal cartao" data-plat data-bits="3" href="mailto:contato.ronaldoavansini@outlook.com">
-        <span><span class="qual">E-mail</span><span class="valor">contato.ronaldoavansini@outlook.com</span></span>
-        <span class="seta">→</span>
+        <div class="canal-icone" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div class="canal-conteudo">
+          <div class="canal-topo">
+            <span class="qual">E-mail Profissional</span>
+            <span class="canal-badge">Resposta &lt; 24h</span>
+          </div>
+          <span class="valor">contato.ronaldoavansini@outlook.com</span>
+          <span class="sobre">Propostas, projetos corporativos e oportunidades</span>
+        </div>
+        <span class="canal-btn">Escrever <span class="seta" aria-hidden="true">↗</span></span>
       </a>
+
       <a class="canal cartao" data-plat data-bits="3" href="https://api.whatsapp.com/send?phone=5516993541387" target="_blank" rel="noopener">
-        <span><span class="qual">WhatsApp</span><span class="valor">(16) 99354-1387</span></span>
-        <span class="seta">→</span>
+        <div class="canal-icone canal-icone-zap" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <div class="canal-conteudo">
+          <div class="canal-topo">
+            <span class="qual">WhatsApp Direto</span>
+            <span class="canal-badge online">● Disponível</span>
+          </div>
+          <span class="valor">(16) 99354-1387</span>
+          <span class="sobre">Alinhamento ágil, dúvidas e conversa em tempo real</span>
+        </div>
+        <span class="canal-btn">Conversar <span class="seta" aria-hidden="true">↗</span></span>
       </a>
+
       <a class="canal cartao" data-plat href="https://linkedin.com/in/ronaldo-avansini" target="_blank" rel="noopener">
-        <span><span class="qual">LinkedIn</span><span class="valor">linkedin.com/in/ronaldo-avansini</span></span>
-        <span class="seta">→</span>
+        <div class="canal-icone" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        <div class="canal-conteudo">
+          <div class="canal-topo">
+            <span class="qual">LinkedIn</span>
+            <span class="canal-badge">Networking</span>
+          </div>
+          <span class="valor">linkedin.com/in/ronaldo-avansini</span>
+          <span class="sobre">Trajetória, artigos técnicos e conexões profissionais</span>
+        </div>
+        <span class="canal-btn">Conectar <span class="seta" aria-hidden="true">↗</span></span>
       </a>
+
       <a class="canal cartao" data-plat href="https://github.com/Getsuga01" target="_blank" rel="noopener">
-        <span><span class="qual">GitHub</span><span class="valor">github.com/Getsuga01</span></span>
-        <span class="seta">→</span>
+        <div class="canal-icone" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        </div>
+        <div class="canal-conteudo">
+          <div class="canal-topo">
+            <span class="qual">GitHub</span>
+            <span class="canal-badge">Open Source</span>
+          </div>
+          <span class="valor">github.com/Getsuga01</span>
+          <span class="sobre">Repositórios de projetos, testes e código-fonte</span>
+        </div>
+        <span class="canal-btn">Explorar <span class="seta" aria-hidden="true">↗</span></span>
       </a>
+
       <a class="canal cartao" data-plat href="https://instagram.com/ronaldoavansini" target="_blank" rel="noopener">
-        <span><span class="qual">Instagram</span><span class="valor">@ronaldoavansini</span></span>
-        <span class="seta">→</span>
+        <div class="canal-icone" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div class="canal-conteudo">
+          <div class="canal-topo">
+            <span class="qual">Instagram Tech</span>
+            <span class="canal-badge">Social Dev</span>
+          </div>
+          <span class="valor">@ronaldoavansini</span>
+          <span class="sobre">Bastidores da carreira, estudos e rotina de engenharia</span>
+        </div>
+        <span class="canal-btn">Seguir <span class="seta" aria-hidden="true">↗</span></span>
       </a>
     </div>
   </section>
@@ -559,6 +653,25 @@
 
 <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 
+<button class="gta-radar" id="gtaRadar" type="button" title="Clique para avançar para a próxima missão" aria-label="Radar de Leonida — próxima missão">
+  <div class="gta-radar-disco" aria-hidden="true">
+    <div class="gta-radar-varredura"></div>
+    <span class="gta-radar-blip" id="gtaRadarBlip"></span>
+  </div>
+  <div class="gta-radar-info">
+    <span class="gta-radar-tag">RADAR // LEONIDA</span>
+    <span class="gta-radar-zona" id="gtaRadarZona">INÍCIO</span>
+    <span class="gta-radar-coords" id="gtaRadarCoords">25.76° N · 80.19° W</span>
+  </div>
+</button>
+
+<div class="gta-toast" id="gtaToast" role="status" aria-live="polite">
+  <div class="gta-toast-titulo" id="gtaToastTitulo">MISSÃO CUMPRIDA</div>
+  <div class="gta-toast-sub" id="gtaToastSub">+RESPECT</div>
+</div>
+
+<div class="gta-cursor" id="gtaCursor" aria-hidden="true"></div>
+
 <script src="js/som.js" defer></script>
 <script src="js/desempenho.js" defer></script>
 <script src="js/sprites.js" defer></script>
@@ -567,6 +680,8 @@
 <script src="js/fundo.js" defer></script>
 <script src="js/jogo.js" defer></script>
 <script src="js/site.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="js/gta6.js" defer></script>
 <script src="js/cena3d.js" defer></script>
 </body>
 </html>
