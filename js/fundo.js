@@ -69,30 +69,31 @@
   }
 
   function desenharSol(prof){
-    if (prof > 0.55) return;
-    var vis = 1 - prof / 0.55;
-    var sx = W * 0.78;
-    var sy = H * (0.28 + prof * 0.45);
-    var r = Math.min(W, H) * 0.17;
+    if (prof > 0.62) return;
+    var vis = 1 - prof / 0.62;
+    var sx = W * 0.74;
+    var sy = H * (0.34 + prof * 0.42);
+    var r = Math.min(W, H) * 0.15;
 
     ctx.save();
-    ctx.globalAlpha = vis * 0.32;
+    ctx.globalAlpha = vis * 0.28;
     var g = ctx.createLinearGradient(sx, sy - r, sx, sy + r);
-    g.addColorStop(0, '#ffd166');
-    g.addColorStop(0.5, '#ff8c42');
-    g.addColorStop(1, '#ff2e93');
+    g.addColorStop(0, '#f6d365');
+    g.addColorStop(0.55, '#f0935b');
+    g.addColorStop(1, '#d91b7a');
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(sx, sy, r, 0, Math.PI * 2);
     ctx.fill();
 
-    // Cortes horizontais estilo Miami Vice no terço inferior do sol
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.globalAlpha = 0.85;
-    for (var i = 0; i < 5; i++) {
-      var fy = sy + r * (0.18 + i * 0.15);
-      var fh = 2 + i * 1.8;
-      ctx.fillRect(sx - r - 2, fy, r * 2 + 4, fh);
+    // Barras horizontais de reflexo na água abaixo do sol (estilo capa Vice City)
+    ctx.globalAlpha = vis * 0.16;
+    for (var i = 0; i < 11; i++) {
+      var ry = sy + r + 10 + i * 11;
+      var rw = r * 1.45 * (1 - i * 0.075);
+      if (rw <= 4) break;
+      ctx.fillStyle = i < 4 ? '#f6b74b' : '#ff2e93';
+      ctx.fillRect(sx - rw, ry, rw * 2, 2.5);
     }
     ctx.restore();
   }
